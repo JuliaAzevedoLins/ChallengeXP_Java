@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Investimentos API</title>
+    <title>Investaê - API de Investimentos</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,24 +14,57 @@
         }
         h1 {
             color: #007bff;
+            margin-bottom: 0.5em;
+        }
+        h2 {
+            color: #333;
+            margin-top: 2em;
         }
         p {
             font-size: 1.2rem;
         }
         .footer {
             margin-top: 50px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #888;
+        }
+        .info {
+            margin: 30px auto;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 24px 32px;
+        }
+        .links {
+            margin-top: 30px;
+        }
+        .links a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .links a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <h1>Investimentos API</h1>
-    <p>Bem-vinda(o) ao sistema de Investimentos!</p>
-    <p>A API está rodando normalmente.</p>
-
-    <div class="footer">
-        <p>Desenvolvido por Julia - 2025</p>
+    <h1>Investaê</h1>
+    <div class="info">
+        <p>Bem-vindo(a) à <strong>Investaê</strong>, a API RESTful para gerenciamento de usuários investidores, investimentos, rentabilidades diárias, bancos e tipos de investimento.</p>
+        <p>Esta aplicação foi desenvolvida em Java 17 com Spring Boot 3, seguindo as melhores práticas de arquitetura, documentação e segurança.</p>
+        <div class="links">
+            <a href="/swagger-ui/index.html" target="_blank">Documentação Swagger</a>
+            <a href="https://github.com/seu-usuario/ChallengeXP_Java" target="_blank">Repositório no GitHub</a>
+        </div>
     </div>
-</body>
-</html>
+    <h2>Como usar?</h2>
+    <p>
+        Utilize a documentação Swagger para explorar e testar todos os endpoints disponíveis.<br>
+        Para dúvidas, consulte o <strong>README</strong> no repositório.
+    </p>
+    <div class="footer">
+        <p>Challenge 2025 - Investaê &copy; 2025</p>
+    </div>
