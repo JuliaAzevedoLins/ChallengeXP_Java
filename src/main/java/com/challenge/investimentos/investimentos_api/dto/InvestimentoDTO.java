@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.challenge.investimentos.investimentos_api.enums.TipoInvestimentoEnum;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+
 /**
  * DTO que representa os dados de um investimento, incluindo informações do banco,
  * tipo de investimento, valores iniciais e rentabilidade diária.
@@ -14,30 +19,43 @@ public class InvestimentoDTO {
     private Long id;
 
     /** Nome do banco onde o investimento está registrado. */
+    @NotNull(message = "Nome do banco é obrigatório")
+    @Size(min = 2, message = "Nome do banco deve ter pelo menos 2 caracteres")
     private String nomeBanco;
 
     /** Código bancário do banco. */
+    @NotNull(message = "Código bancário é obrigatório")
     private Integer codigoBancario;
 
     /** Tipo do investimento (ex: renda fixa, ações, etc). */
+    @NotNull(message = "Tipo de investimento é obrigatório")
     private TipoInvestimentoEnum tipoInvestimento;
 
     /** Nome do investimento. */
+    @NotNull(message = "Nome do investimento é obrigatório")
+    @Size(min = 2, message = "Nome do investimento deve ter pelo menos 2 caracteres")
     private String nomeInvestimento;
 
     /** Valor inicial investido. */
+    @NotNull(message = "Montante inicial é obrigatório")
+    @PositiveOrZero(message = "Montante inicial não pode ser negativo")
     private Double montanteInicial;
 
     /** Valor inicial da ação, se aplicável. */
+    @PositiveOrZero(message = "Valor inicial da ação não pode ser negativo")
     private Double valorInicialAcao;
 
     /** Taxa de rentabilidade do investimento. */
+    @NotNull(message = "Taxa de rentabilidade é obrigatória")
     private String taxaRentabilidade;
 
     /** Número inicial de ações, se aplicável. */
+    @PositiveOrZero(message = "Número inicial de ações não pode ser negativo")
     private Integer numeroAcoesInicial;
 
     /** Lista de rentabilidades diárias associadas ao investimento. */
+    @NotNull(message = "A lista de rentabilidades diárias não pode ser nula")
+    @NotEmpty(message = "A lista de rentabilidades diárias não pode ser vazia")
     private List<RentabilidadeDiariaDTO> rentabilidadeDiaria;
 
     /**

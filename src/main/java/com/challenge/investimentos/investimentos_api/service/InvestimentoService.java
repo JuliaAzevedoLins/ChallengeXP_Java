@@ -7,6 +7,9 @@ import com.challenge.investimentos.investimentos_api.model.RentabilidadeDiaria;
 import com.challenge.investimentos.investimentos_api.model.UsuarioInvestimento;
 import com.challenge.investimentos.investimentos_api.repository.InvestimentoRepository;
 import com.challenge.investimentos.investimentos_api.repository.UsuarioInvestimentoRepository;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -175,7 +178,7 @@ public class InvestimentoService {
      * @param dto DTO contendo os dados do usuário e seus investimentos
      * @return ResponseEntity com mensagem de sucesso ou erro
      */
-    public ResponseEntity<String> criarInvestimento(UsuarioInvestimentoDTO dto) {
+        public ResponseEntity<String> criarInvestimento(@Valid UsuarioInvestimentoDTO dto) {
         if (dto.getCpfIdentificacao() == null || dto.getCpfIdentificacao().isEmpty()) {
             return ResponseEntity.badRequest().body("CPF do usuário é obrigatório");
         }
