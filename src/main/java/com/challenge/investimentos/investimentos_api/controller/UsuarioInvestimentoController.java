@@ -3,6 +3,7 @@ package com.challenge.investimentos.investimentos_api.controller;
 import com.challenge.investimentos.investimentos_api.dto.UsuarioInvestimentoDTO;
 import com.challenge.investimentos.investimentos_api.model.UsuarioInvestimento;
 import com.challenge.investimentos.investimentos_api.service.UsuarioInvestimentoService;
+import com.challenge.investimentos.investimentos_api.dto.UsuarioCadastroDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -54,14 +55,9 @@ public class UsuarioInvestimentoController {
     }
 
     @PostMapping
-    @Operation(summary = "Criar novo usuário investidor", description = "Cria um novo usuário investidor com os dados fornecidos")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos enviados"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    })
-    public ResponseEntity<String> criarUsuarioInvestimento(@RequestBody UsuarioInvestimentoDTO dto) {
-        return service.criarUsuarioInvestimento(dto);
+    @Operation(summary = "Criar novo usuário investidor", description = "Cria um novo usuário investidor com os dados fornecidos (apenas CPF)")
+    public ResponseEntity<String> criarUsuarioInvestimento(@RequestBody UsuarioCadastroDTO dto) {
+        return service.criarUsuarioInvestimento(dto.getCpfIdentificacao());
     }
 
     @DeleteMapping("/{cpf}")

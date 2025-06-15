@@ -6,7 +6,6 @@ import com.challenge.investimentos.investimentos_api.dto.UsuarioInvestimentoDTO;
 import com.challenge.investimentos.investimentos_api.model.Investimento;
 import com.challenge.investimentos.investimentos_api.model.RentabilidadeDiaria;
 import com.challenge.investimentos.investimentos_api.model.UsuarioInvestimento;
-import com.challenge.investimentos.investimentos_api.repository.InvestimentoRepository;
 import com.challenge.investimentos.investimentos_api.repository.UsuarioInvestimentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +26,6 @@ public class UsuarioInvestimentoService {
     @Autowired
     private UsuarioInvestimentoRepository usuarioInvestimentoRepository;
 
-    @Autowired
-    private InvestimentoRepository investimentoRepository;
-
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     /**
@@ -42,17 +38,24 @@ public class UsuarioInvestimentoService {
         if (cpf == null || cpf.trim().isEmpty()) {
             return ResponseEntity.badRequest().body("CPF do usuário é obrigatório.");
         }
-
+    
         UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpfIdentificacao(cpf);
         if (usuario == null) {
             return ResponseEntity.badRequest().body("Usuário com CPF " + cpf + " não encontrado.");
         }
-
+    
         List<InvestimentoDTO> investimentosDTO = dto.getDataUsuarioInvestimentos();
         if (investimentosDTO == null || investimentosDTO.isEmpty()) {
             return ResponseEntity.badRequest().body("Lista de investimentos não pode ser vazia.");
         }
-
+    
+        // Limpa a lista de investimentos antigos, se quiser sobrescrever
+        if (usuario.getInvestimentos() == null) {
+            usuario.setInvestimentos(new java.util.ArrayList<>());
+        } else {
+            usuario.getInvestimentos().clear();
+        }
+    
         List<Investimento> investimentos = investimentosDTO.stream().map(investDTO -> {
             Investimento investimento = new Investimento();
             investimento.setUsuarioInvestimento(usuario);
@@ -64,27 +67,33 @@ public class UsuarioInvestimentoService {
             investimento.setValorInicialAcao(investDTO.getValorInicialAcao());
             investimento.setTaxaRentabilidade(investDTO.getTaxaRentabilidade());
             investimento.setNumeroAcoesInicial(investDTO.getNumeroAcoesInicial());
-
+    
             List<RentabilidadeDiariaDTO> rentabilidadeDTOs = investDTO.getRentabilidadeDiaria();
             if (rentabilidadeDTOs != null && !rentabilidadeDTOs.isEmpty()) {
                 List<RentabilidadeDiaria> rentabilidades = rentabilidadeDTOs.stream().map(rdDTO -> {
                     RentabilidadeDiaria rd = new RentabilidadeDiaria();
-                    rd.setDataRentabilidadeDiaria(LocalDate.parse(rdDTO.getDataRentabilidadeDiaria(), FORMATTER));
+                    // Ajuste para evitar erro de data inválida
+                    try {
+                        rd.setDataRentabilidadeDiaria(LocalDate.parse(rdDTO.getDataRentabilidadeDiaria(), FORMATTER));
+                    } catch (Exception e) {
+                        rd.setDataRentabilidadeDiaria(null);
+                    }
                     rd.setValorDiarioAcao(rdDTO.getValorDiarioAcao());
                     rd.setTaxaDiarioRentabilidade(rdDTO.getTaxaDiarioRentabilidade());
                     rd.setMontanteAcumuladoDiario(rdDTO.getMontanteAcumuladoDiario());
                     rd.setInvestimento(investimento);
                     return rd;
                 }).collect(Collectors.toList());
-
+    
                 investimento.setRentabilidadeDiaria(rentabilidades);
             }
-
+    
             return investimento;
         }).collect(Collectors.toList());
-
-        investimentoRepository.saveAll(investimentos);
-
+    
+        usuario.getInvestimentos().addAll(investimentos);
+        usuarioInvestimentoRepository.save(usuario);
+    
         return ResponseEntity.ok("Investimentos salvos com sucesso.");
     }
 
@@ -114,20 +123,20 @@ public class UsuarioInvestimentoService {
      * @param dto DTO contendo os dados do usuário
      * @return ResponseEntity com mensagem de sucesso ou erro
      */
-    public ResponseEntity<String> criarUsuarioInvestimento(UsuarioInvestimentoDTO dto) {
-        if (dto.getCpfIdentificacao() == null || dto.getCpfIdentificacao().trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("CPF do usuário é obrigatório.");
-        }
+    public ResponseEntity<String> criarUsuarioInvestimento(String cpfIdentificacao) {
+    if (cpfIdentificacao == null || cpfIdentificacao.trim().isEmpty()) {
+        return ResponseEntity.badRequest().body("CPF do usuário é obrigatório.");
+    }
 
-        if (usuarioInvestimentoRepository.findByCpfIdentificacao(dto.getCpfIdentificacao()) != null) {
-            return ResponseEntity.badRequest().body("Usuário com esse CPF já existe.");
-        }
+    if (usuarioInvestimentoRepository.findByCpfIdentificacao(cpfIdentificacao) != null) {
+        return ResponseEntity.badRequest().body("Usuário com esse CPF já existe.");
+    }
 
-        UsuarioInvestimento novoUsuario = new UsuarioInvestimento();
-        novoUsuario.setCpfIdentificacao(dto.getCpfIdentificacao());
+    UsuarioInvestimento novoUsuario = new UsuarioInvestimento();
+    novoUsuario.setCpfIdentificacao(cpfIdentificacao);
 
-        usuarioInvestimentoRepository.save(novoUsuario);
-        return ResponseEntity.ok("Usuário criado com sucesso.");
+    usuarioInvestimentoRepository.save(novoUsuario);
+    return ResponseEntity.ok("Usuário criado com sucesso.");
     }
 
     /**
