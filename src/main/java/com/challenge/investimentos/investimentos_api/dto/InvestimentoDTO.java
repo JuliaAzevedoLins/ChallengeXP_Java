@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.challenge.investimentos.investimentos_api.enums.TipoInvestimentoEnum;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -16,46 +17,56 @@ import jakarta.validation.constraints.NotNull;
 public class InvestimentoDTO {
 
     /** Identificador único do investimento. */
+    @Schema(example = "1")
     private Long id;
 
     /** Nome do banco onde o investimento está registrado. */
     @NotNull(message = "Nome do banco é obrigatório")
     @Size(min = 2, message = "Nome do banco deve ter pelo menos 2 caracteres")
+    @Schema(example = "Nubank")
     private String nomeBanco;
 
     /** Código bancário do banco. */
     @NotNull(message = "Código bancário é obrigatório")
+    @Schema(example = "260")
     private Integer codigoBancario;
 
     /** Tipo do investimento (ex: renda fixa, ações, etc). */
     @NotNull(message = "Tipo de investimento é obrigatório")
+    @Schema(example = "RENDA_FIXA")
     private TipoInvestimentoEnum tipoInvestimento;
 
     /** Nome do investimento. */
     @NotNull(message = "Nome do investimento é obrigatório")
     @Size(min = 2, message = "Nome do investimento deve ter pelo menos 2 caracteres")
+    @Schema(example = "CDB Nubank")
     private String nomeInvestimento;
 
     /** Valor inicial investido. */
     @NotNull(message = "Montante inicial é obrigatório")
     @PositiveOrZero(message = "Montante inicial não pode ser negativo")
+    @Schema(example = "1000.0")
     private Double montanteInicial;
 
     /** Valor inicial da ação, se aplicável. */
     @PositiveOrZero(message = "Valor inicial da ação não pode ser negativo")
+    @Schema(example = "0.0")
     private Double valorInicialAcao;
 
     /** Taxa de rentabilidade do investimento. */
     @NotNull(message = "Taxa de rentabilidade é obrigatória")
+    @Schema(example = "0.12")
     private String taxaRentabilidade;
 
     /** Número inicial de ações, se aplicável. */
     @PositiveOrZero(message = "Número inicial de ações não pode ser negativo")
+    @Schema(example = "0")
     private Integer numeroAcoesInicial;
 
     /** Lista de rentabilidades diárias associadas ao investimento. */
     @NotNull(message = "A lista de rentabilidades diárias não pode ser nula")
     @NotEmpty(message = "A lista de rentabilidades diárias não pode ser vazia")
+    @Schema(description = "Lista de rentabilidades diárias", example = "[{\"dataRentabilidadeDiaria\":\"01-01-2025\",\"valorDiarioAcao\":100.5,\"taxaDiarioRentabilidade\":\"0.12\",\"montanteAcumuladoDiario\":1050.75}]")
     private List<RentabilidadeDiariaDTO> rentabilidadeDiaria;
 
     /**
