@@ -129,56 +129,55 @@ public class InvestimentoService {
         return ResponseEntity.ok("Investimento deletado com sucesso");
     }
 
-        // ...existing code...
-        /**
-         * Atualiza um investimento existente pelo ID.
-         * @param id ID do investimento a ser atualizado
-         * @param dto DTO contendo os novos dados do investimento
-         * @return ResponseEntity com mensagem de sucesso ou erro
-         */
-        public ResponseEntity<String> atualizarInvestimento(Long id, InvestimentoDTO dto) {
-            Investimento investimentoExistente = investimentoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Investimento não encontrado"));
-    
-            investimentoExistente.setNomeBanco(dto.getNomeBanco());
-            investimentoExistente.setCodigoBancario(dto.getCodigoBancario());
-            investimentoExistente.setTipoInvestimento(dto.getTipoInvestimento());
-            investimentoExistente.setNomeInvestimento(dto.getNomeInvestimento());
-            investimentoExistente.setMontanteInicial(dto.getMontanteInicial());
-            investimentoExistente.setValorInicialAcao(dto.getValorInicialAcao());
-            investimentoExistente.setTaxaRentabilidade(dto.getTaxaRentabilidade());
-            investimentoExistente.setNumeroAcoesInicial(dto.getNumeroAcoesInicial());
-    
-            // CORREÇÃO: Limpe a lista existente e adicione os novos, sem trocar a referência
-            List<RentabilidadeDiaria> listaExistente = investimentoExistente.getRentabilidadeDiaria();
-            if (listaExistente == null) {
-                listaExistente = new java.util.ArrayList<>();
-                investimentoExistente.setRentabilidadeDiaria(listaExistente);
-            } else {
-                listaExistente.clear();
-            }
-            if (dto.getRentabilidadeDiaria() != null) {
-                for (com.challenge.investimentos.investimentos_api.dto.RentabilidadeDiariaDTO rdDTO : dto.getRentabilidadeDiaria()) {
-                    RentabilidadeDiaria rd = new RentabilidadeDiaria();
-                    rd.setDataRentabilidadeDiaria(LocalDate.parse(rdDTO.getDataRentabilidadeDiaria(), formatter));
-                    rd.setValorDiarioAcao(rdDTO.getValorDiarioAcao());
-                    rd.setTaxaDiarioRentabilidade(rdDTO.getTaxaDiarioRentabilidade());
-                    rd.setMontanteAcumuladoDiario(rdDTO.getMontanteAcumuladoDiario());
-                    rd.setInvestimento(investimentoExistente);
-                    listaExistente.add(rd);
-                }
-            }
-    
-            investimentoRepository.save(investimentoExistente);
-            return ResponseEntity.ok("Investimento atualizado com sucesso");
+    /**
+     * Atualiza um investimento existente pelo ID.
+     * @param id ID do investimento a ser atualizado
+     * @param dto DTO contendo os novos dados do investimento
+     * @return ResponseEntity com mensagem de sucesso ou erro
+     */
+    public ResponseEntity<String> atualizarInvestimento(Long id, InvestimentoDTO dto) {
+        Investimento investimentoExistente = investimentoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Investimento não encontrado"));
+
+        investimentoExistente.setNomeBanco(dto.getNomeBanco());
+        investimentoExistente.setCodigoBancario(dto.getCodigoBancario());
+        investimentoExistente.setTipoInvestimento(dto.getTipoInvestimento());
+        investimentoExistente.setNomeInvestimento(dto.getNomeInvestimento());
+        investimentoExistente.setMontanteInicial(dto.getMontanteInicial());
+        investimentoExistente.setValorInicialAcao(dto.getValorInicialAcao());
+        investimentoExistente.setTaxaRentabilidade(dto.getTaxaRentabilidade());
+        investimentoExistente.setNumeroAcoesInicial(dto.getNumeroAcoesInicial());
+
+        // CORREÇÃO: Limpe a lista existente e adicione os novos, sem trocar a referência
+        List<RentabilidadeDiaria> listaExistente = investimentoExistente.getRentabilidadeDiaria();
+        if (listaExistente == null) {
+            listaExistente = new java.util.ArrayList<>();
+            investimentoExistente.setRentabilidadeDiaria(listaExistente);
+        } else {
+            listaExistente.clear();
         }
+        if (dto.getRentabilidadeDiaria() != null) {
+            for (com.challenge.investimentos.investimentos_api.dto.RentabilidadeDiariaDTO rdDTO : dto.getRentabilidadeDiaria()) {
+                RentabilidadeDiaria rd = new RentabilidadeDiaria();
+                rd.setDataRentabilidadeDiaria(LocalDate.parse(rdDTO.getDataRentabilidadeDiaria(), formatter));
+                rd.setValorDiarioAcao(rdDTO.getValorDiarioAcao());
+                rd.setTaxaDiarioRentabilidade(rdDTO.getTaxaDiarioRentabilidade());
+                rd.setMontanteAcumuladoDiario(rdDTO.getMontanteAcumuladoDiario());
+                rd.setInvestimento(investimentoExistente);
+                listaExistente.add(rd);
+            }
+        }
+
+        investimentoRepository.save(investimentoExistente);
+        return ResponseEntity.ok("Investimento atualizado com sucesso");
+    }
 
     /**
      * Cria um novo investimento para um usuário investidor.
      * @param dto DTO contendo os dados do usuário e seus investimentos
      * @return ResponseEntity com mensagem de sucesso ou erro
      */
-        public ResponseEntity<String> criarInvestimento(@Valid UsuarioInvestimentoDTO dto) {
+    public ResponseEntity<String> criarInvestimento(@Valid UsuarioInvestimentoDTO dto) {
         if (dto.getCpfIdentificacao() == null || dto.getCpfIdentificacao().isEmpty()) {
             return ResponseEntity.badRequest().body("CPF do usuário é obrigatório");
         }

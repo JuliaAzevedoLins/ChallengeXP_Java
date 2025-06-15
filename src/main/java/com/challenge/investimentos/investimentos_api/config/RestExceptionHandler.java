@@ -10,9 +10,19 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import java.time.format.DateTimeParseException;
 
+/**
+ * Handler global para tratamento de exceções na API REST.
+ * Fornece respostas amigáveis para erros comuns de validação, formatação e conversão de dados.
+ */
 @ControllerAdvice
 public class RestExceptionHandler {
 
+    /**
+     * Trata erros de leitura/conversão do corpo da requisição, como enums inválidos, datas ou números em formato incorreto.
+     *
+     * @param ex Exceção lançada durante a leitura do corpo da requisição
+     * @return ResponseEntity com mensagem de erro e status HTTP apropriado
+     */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleEnumException(HttpMessageNotReadableException ex) {
         if (ex.getCause() instanceof InvalidFormatException) {
@@ -44,6 +54,12 @@ public class RestExceptionHandler {
                 .body("Erro na requisição: " + ex.getMessage());
     }
 
+    /**
+     * Trata erros de parsing de datas, retornando mensagem clara sobre o formato esperado.
+     *
+     * @param ex Exceção de formatação de data
+     * @return ResponseEntity com mensagem de erro e status 400
+     */
     @ExceptionHandler(DateTimeParseException.class)
     public ResponseEntity<String> handleDateParseException(DateTimeParseException ex) {
         return ResponseEntity
@@ -51,6 +67,12 @@ public class RestExceptionHandler {
                 .body("Data em formato inválido. Use o formato dd-MM-yyyy.");
     }
 
+    /**
+     * Trata erros de validação de campos dos DTOs, retornando mensagens detalhadas para cada campo inválido.
+     *
+     * @param ex Exceção de argumento inválido (validação)
+     * @return ResponseEntity com mensagem de erro e status 400
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
         String mensagem = ex.getBindingResult().getFieldErrors().stream()
@@ -60,6 +82,12 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensagem);
     }
 
+    /**
+     * Trata exceções genéricas não capturadas por outros handlers, retornando erro interno do servidor.
+     *
+     * @param ex Exceção genérica
+     * @return ResponseEntity com mensagem de erro e status 500
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(Exception ex) {
         return ResponseEntity

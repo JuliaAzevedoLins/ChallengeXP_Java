@@ -10,6 +10,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.util.List;
 
+/**
+ * Controller responsável pelos endpoints relacionados a tipos de investimento.
+ */
 @RestController
 @RequestMapping("/api/tipos-investimento")
 @Tag(name = "Tipos de Investimento", description = "Endpoints para operações relacionadas a tipos de investimento")
@@ -17,10 +20,20 @@ public class TipoInvestimentoController {
 
     private final TipoInvestimentoService tipoInvestimentoService;
 
+    /**
+     * Construtor para injeção do serviço de tipos de investimento.
+     * @param tipoInvestimentoService serviço de tipos de investimento
+     */
     public TipoInvestimentoController(TipoInvestimentoService tipoInvestimentoService) {
         this.tipoInvestimentoService = tipoInvestimentoService;
     }
 
+    /**
+     * Lista os tipos de investimento associados ao CPF informado.
+     *
+     * @param cpf CPF do usuário investidor
+     * @return Lista de tipos de investimento associados ao CPF
+     */
     @Operation(
         summary = "Lista tipos de investimento por CPF",
         description = "Retorna uma lista de tipos de investimento associados ao CPF informado."

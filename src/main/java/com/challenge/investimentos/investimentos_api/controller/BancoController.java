@@ -10,6 +10,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.util.List;
 
+/**
+ * Controller responsável pelos endpoints relacionados a operações com bancos.
+ */
 @RestController
 @RequestMapping("/api/bancos")
 @Tag(name = "Bancos", description = "Endpoints para operações relacionadas a bancos")
@@ -17,10 +20,20 @@ public class BancoController {
 
     private final BancoService bancoService;
 
+    /**
+     * Construtor para injeção do serviço de bancos.
+     * @param bancoService serviço de banco
+     */
     public BancoController(BancoService bancoService) {
         this.bancoService = bancoService;
     }
 
+    /**
+     * Lista os bancos associados ao CPF informado.
+     *
+     * @param cpf CPF do usuário investidor
+     * @return Lista de bancos associados ao CPF
+     */
     @Operation(
         summary = "Lista bancos por CPF",
         description = "Retorna uma lista de bancos associados ao CPF informado."

@@ -12,16 +12,22 @@ import java.util.List;
 @Table(name = "USUARIO_INVESTIMENTO")
 public class UsuarioInvestimento {
 
-    /** Identificador único do usuário investidor. */
+    /**
+     * Identificador único do usuário investidor.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** CPF de identificação do usuário investidor. */
+    /**
+     * CPF de identificação do usuário investidor.
+     */
     @Column(name = "CPF_IDENTIFICACAO", nullable = false, unique = true)
     private String cpfIdentificacao;
 
-    /** Lista de investimentos associados ao usuário investidor. */
+    /**
+     * Lista de investimentos associados ao usuário investidor.
+     */
     @OneToMany(mappedBy = "usuarioInvestimento", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Investimento> investimentos;

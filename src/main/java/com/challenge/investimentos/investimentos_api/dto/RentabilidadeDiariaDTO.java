@@ -4,22 +4,31 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * DTO que representa os dados de rentabilidade diária de um investimento.
+ * Utilizado para transferência de informações sobre a rentabilidade de um investimento em um determinado dia.
  */
 public class RentabilidadeDiariaDTO {
 
-    /** Data da rentabilidade diária no formato "dd-MM-yyyy". */
+    /** 
+     * Data da rentabilidade diária no formato "dd-MM-yyyy".
+     */
     @Schema(example = "01-01-2025")
     private String dataRentabilidadeDiaria;
 
-    /** Valor diário da ação. */
+    /** 
+     * Valor diário da ação.
+     */
     @Schema(example = "100.50")
     private Double valorDiarioAcao;
 
-    /** Taxa de rentabilidade diária. */
+    /** 
+     * Taxa de rentabilidade diária.
+     */
     @Schema(example = "0.12")
     private String taxaDiarioRentabilidade;
 
-    /** Montante acumulado diário. */
+    /** 
+     * Montante acumulado diário.
+     */
     @Schema(example = "1050.75")
     private Double montanteAcumuladoDiario;
 

@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * Controller responsável pelos endpoints relacionados a investimentos.
+ * Permite criar, atualizar, listar e deletar investimentos de usuários.
  */
 @RestController
 @RequestMapping("/api/investimentos")
@@ -35,6 +36,7 @@ public class InvestimentoController {
 
     /**
      * Cria um novo investimento para um usuário.
+     *
      * @param dto DTO contendo os dados do usuário e seus investimentos
      * @return ResponseEntity com mensagem de sucesso ou erro
      */
@@ -51,6 +53,7 @@ public class InvestimentoController {
 
     /**
      * Salva ou atualiza os investimentos de um usuário.
+     *
      * @param dto DTO contendo os dados do usuário e seus investimentos
      * @return ResponseEntity com mensagem de sucesso ou erro
      */
@@ -67,7 +70,8 @@ public class InvestimentoController {
 
     /**
      * Atualiza um investimento existente pelo ID.
-     * @param id ID do investimento
+     *
+     * @param id  ID do investimento
      * @param dto DTO contendo os novos dados do investimento
      * @return ResponseEntity com mensagem de sucesso ou erro
      */
@@ -85,6 +89,7 @@ public class InvestimentoController {
 
     /**
      * Lista todos os investimentos cadastrados.
+     *
      * @return ResponseEntity com a lista de investimentos
      */
     @GetMapping
@@ -99,6 +104,7 @@ public class InvestimentoController {
 
     /**
      * Lista todos os investimentos de um usuário pelo CPF.
+     *
      * @param cpf CPF do usuário
      * @return ResponseEntity com a lista de investimentos do usuário
      */
@@ -115,6 +121,7 @@ public class InvestimentoController {
 
     /**
      * Deleta um investimento pelo seu ID.
+     *
      * @param id ID do investimento
      * @return ResponseEntity com mensagem de sucesso ou erro
      */

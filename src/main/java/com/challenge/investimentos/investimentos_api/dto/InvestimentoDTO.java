@@ -13,6 +13,7 @@ import jakarta.validation.constraints.NotNull;
 /**
  * DTO que representa os dados de um investimento, incluindo informações do banco,
  * tipo de investimento, valores iniciais e rentabilidade diária.
+ * Utilizado para transferência de dados entre as camadas da aplicação.
  */
 public class InvestimentoDTO {
 
@@ -117,7 +118,7 @@ public class InvestimentoDTO {
         this.codigoBancario = codigoBancario;
     }
 
-        /**
+    /**
      * Obtém o tipo do investimento.
      * @return tipo do investimento
      */

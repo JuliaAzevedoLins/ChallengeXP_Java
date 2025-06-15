@@ -39,7 +39,6 @@ public class Investimento {
     @Enumerated(EnumType.STRING)
     private TipoInvestimentoEnum tipoInvestimento;
 
-
     /** Nome do investimento. */
     @Column(name = "NOME_INVESTIMENTO")
     private String nomeInvestimento;
@@ -126,16 +125,15 @@ public class Investimento {
      * @return tipo do investimento
      */
     public TipoInvestimentoEnum getTipoInvestimento() {
-    return tipoInvestimento;
+        return tipoInvestimento;
     }
-
 
     /**
      * Define o tipo do investimento.
      * @param tipoInvestimento tipo do investimento
      */
     public void setTipoInvestimento(TipoInvestimentoEnum tipoInvestimento) {
-    this.tipoInvestimento = tipoInvestimento;
+        this.tipoInvestimento = tipoInvestimento;
     }
 
     /**

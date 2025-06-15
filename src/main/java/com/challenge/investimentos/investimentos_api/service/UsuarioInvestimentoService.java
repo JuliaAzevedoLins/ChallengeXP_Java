@@ -30,6 +30,8 @@ public class UsuarioInvestimentoService {
 
     /**
      * Salva ou atualiza os investimentos de um usuário investidor.
+     * Sobrescreve os investimentos antigos do usuário.
+     *
      * @param dto DTO contendo os dados do usuário e seus investimentos
      * @return ResponseEntity com mensagem de sucesso ou erro
      */
@@ -38,24 +40,24 @@ public class UsuarioInvestimentoService {
         if (cpf == null || cpf.trim().isEmpty()) {
             return ResponseEntity.badRequest().body("CPF do usuário é obrigatório.");
         }
-    
+
         UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpfIdentificacao(cpf);
         if (usuario == null) {
             return ResponseEntity.badRequest().body("Usuário com CPF " + cpf + " não encontrado.");
         }
-    
+
         List<InvestimentoDTO> investimentosDTO = dto.getDataUsuarioInvestimentos();
         if (investimentosDTO == null || investimentosDTO.isEmpty()) {
             return ResponseEntity.badRequest().body("Lista de investimentos não pode ser vazia.");
         }
-    
+
         // Limpa a lista de investimentos antigos, se quiser sobrescrever
         if (usuario.getInvestimentos() == null) {
             usuario.setInvestimentos(new java.util.ArrayList<>());
         } else {
             usuario.getInvestimentos().clear();
         }
-    
+
         List<Investimento> investimentos = investimentosDTO.stream().map(investDTO -> {
             Investimento investimento = new Investimento();
             investimento.setUsuarioInvestimento(usuario);
@@ -67,7 +69,7 @@ public class UsuarioInvestimentoService {
             investimento.setValorInicialAcao(investDTO.getValorInicialAcao());
             investimento.setTaxaRentabilidade(investDTO.getTaxaRentabilidade());
             investimento.setNumeroAcoesInicial(investDTO.getNumeroAcoesInicial());
-    
+
             List<RentabilidadeDiariaDTO> rentabilidadeDTOs = investDTO.getRentabilidadeDiaria();
             if (rentabilidadeDTOs != null && !rentabilidadeDTOs.isEmpty()) {
                 List<RentabilidadeDiaria> rentabilidades = rentabilidadeDTOs.stream().map(rdDTO -> {
@@ -84,21 +86,22 @@ public class UsuarioInvestimentoService {
                     rd.setInvestimento(investimento);
                     return rd;
                 }).collect(Collectors.toList());
-    
+
                 investimento.setRentabilidadeDiaria(rentabilidades);
             }
-    
+
             return investimento;
         }).collect(Collectors.toList());
-    
+
         usuario.getInvestimentos().addAll(investimentos);
         usuarioInvestimentoRepository.save(usuario);
-    
+
         return ResponseEntity.ok("Investimentos salvos com sucesso.");
     }
 
     /**
      * Lista todos os usuários investidores cadastrados.
+     *
      * @return ResponseEntity com a lista de usuários investidores
      */
     public ResponseEntity<List<UsuarioInvestimento>> listarTodosUsuarios() {
@@ -107,6 +110,7 @@ public class UsuarioInvestimentoService {
 
     /**
      * Busca um usuário investidor pelo CPF.
+     *
      * @param cpf CPF do usuário investidor
      * @return ResponseEntity com o usuário encontrado ou erro
      */
@@ -120,27 +124,29 @@ public class UsuarioInvestimentoService {
 
     /**
      * Cria um novo usuário investidor.
-     * @param dto DTO contendo os dados do usuário
+     *
+     * @param cpfIdentificacao CPF de identificação do novo usuário
      * @return ResponseEntity com mensagem de sucesso ou erro
      */
     public ResponseEntity<String> criarUsuarioInvestimento(String cpfIdentificacao) {
-    if (cpfIdentificacao == null || cpfIdentificacao.trim().isEmpty()) {
-        return ResponseEntity.badRequest().body("CPF do usuário é obrigatório.");
-    }
+        if (cpfIdentificacao == null || cpfIdentificacao.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("CPF do usuário é obrigatório.");
+        }
 
-    if (usuarioInvestimentoRepository.findByCpfIdentificacao(cpfIdentificacao) != null) {
-        return ResponseEntity.badRequest().body("Usuário com esse CPF já existe.");
-    }
+        if (usuarioInvestimentoRepository.findByCpfIdentificacao(cpfIdentificacao) != null) {
+            return ResponseEntity.badRequest().body("Usuário com esse CPF já existe.");
+        }
 
-    UsuarioInvestimento novoUsuario = new UsuarioInvestimento();
-    novoUsuario.setCpfIdentificacao(cpfIdentificacao);
+        UsuarioInvestimento novoUsuario = new UsuarioInvestimento();
+        novoUsuario.setCpfIdentificacao(cpfIdentificacao);
 
-    usuarioInvestimentoRepository.save(novoUsuario);
-    return ResponseEntity.ok("Usuário criado com sucesso.");
+        usuarioInvestimentoRepository.save(novoUsuario);
+        return ResponseEntity.ok("Usuário criado com sucesso.");
     }
 
     /**
      * Deleta um usuário investidor pelo CPF.
+     *
      * @param cpf CPF do usuário investidor
      * @return ResponseEntity com mensagem de sucesso ou erro
      */
