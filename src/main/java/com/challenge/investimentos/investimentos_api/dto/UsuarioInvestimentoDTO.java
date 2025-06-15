@@ -1,6 +1,7 @@
 package com.challenge.investimentos.investimentos_api.dto;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * DTO que representa os dados de um usuário investidor,
@@ -9,9 +10,14 @@ import java.util.List;
 public class UsuarioInvestimentoDTO {
 
     /** CPF de identificação do usuário investidor. */
+    @Schema(example = "12345678900")
     private String cpfIdentificacao;
 
     /** Lista de investimentos associados ao usuário. */
+    @Schema(
+        description = "Lista de investimentos do usuário",
+        example = "[{\"id\":1,\"nomeBanco\":\"Nubank\",\"codigoBancario\":260,\"tipoInvestimento\":\"RENDA_FIXA\",\"nomeInvestimento\":\"CDB Nubank\",\"montanteInicial\":1000.0,\"valorInicialAcao\":0.0,\"taxaRentabilidade\":\"0.12\",\"numeroAcoesInicial\":0,\"rentabilidadeDiaria\":[{\"dataRentabilidadeDiaria\":\"01-01-2025\",\"valorDiarioAcao\":100.5,\"taxaDiarioRentabilidade\":\"0.12\",\"montanteAcumuladoDiario\":1050.75}]}]"
+    )
     private List<InvestimentoDTO> dataUsuarioInvestimentos;
 
     /**
