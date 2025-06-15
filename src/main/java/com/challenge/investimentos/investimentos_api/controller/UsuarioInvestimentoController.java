@@ -23,7 +23,7 @@ public class UsuarioInvestimentoController {
     private UsuarioInvestimentoService service;
 
     @PutMapping
-    @Operation(summary = "Salvar ou atualizar investimentos do usuário", description = "Salva ou atualiza os investimentos associados a um usuário investidor")
+    @Operation(summary = "Salvar ou atualizar todos os investimentos do usuário", description = "Salva ou atualiza todos os investimentos associados a um usuário investidor - Essa operação deve ser feita com cautela, pois sobrescreve os investimentos existentes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Investimentos salvos com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos enviados"),
