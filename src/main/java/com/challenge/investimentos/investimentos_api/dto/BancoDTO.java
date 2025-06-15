@@ -1,7 +1,12 @@
 package com.challenge.investimentos.investimentos_api.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class BancoDTO {
+    @Schema(example = "Nubank")
     private String nomeBanco;
+
+    @Schema(example = "260")
     private Integer codigoBancario;
 
     public BancoDTO() {}
