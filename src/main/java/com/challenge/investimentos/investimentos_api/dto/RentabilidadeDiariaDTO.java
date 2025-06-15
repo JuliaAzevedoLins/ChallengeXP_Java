@@ -1,11 +1,14 @@
 package com.challenge.investimentos.investimentos_api.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * DTO que representa os dados de rentabilidade diária de um investimento.
  */
 public class RentabilidadeDiariaDTO {
 
     /** Data da rentabilidade diária no formato "dd-MM-yyyy". */
+    @Schema(example = "01-01-2025")
     private String dataRentabilidadeDiaria;
 
     /** Valor diário da ação. */
