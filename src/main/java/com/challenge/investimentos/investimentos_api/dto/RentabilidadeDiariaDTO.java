@@ -12,12 +12,15 @@ public class RentabilidadeDiariaDTO {
     private String dataRentabilidadeDiaria;
 
     /** Valor diário da ação. */
+    @Schema(example = "100.50")
     private Double valorDiarioAcao;
 
     /** Taxa de rentabilidade diária. */
+    @Schema(example = "0.12")
     private String taxaDiarioRentabilidade;
 
     /** Montante acumulado diário. */
+    @Schema(example = "1050.75")
     private Double montanteAcumuladoDiario;
 
     /**
