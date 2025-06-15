@@ -20,7 +20,6 @@ Este projeto implementa uma arquitetura RESTful, com documentação Swagger/Open
   - [Tipos de Investimento](#tipos-de-investimento)
 - [Tratamento de Erros](#tratamento-de-erros)
 - [Padrões e Boas Práticas](#padrões-e-boas-práticas)
-- [Como Contribuir](#como-contribuir)
 - [Licença](#licença)
 
 ---
@@ -316,18 +315,6 @@ Exemplo de erro para enum inválido:
 - **Tratamento global de erros:** Classe `RestExceptionHandler`.
 - **Enums para valores fixos:** Exemplo: `TipoInvestimentoEnum`.
 - **JavaDoc:** Presente nas principais classes e métodos.
-
----
-
-## Como Contribuir
-
-1. Fork este repositório
-2. Crie uma branch: `git checkout -b minha-feature`
-3. Commit suas alterações: `git commit -m 'Minha feature'`
-4. Push para a branch: `git push origin minha-feature`
-5. Abra um Pull Request
-
----
 
 ## Licença
 
