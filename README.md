@@ -1,37 +1,43 @@
-# Investaê
+# Investaê 🚀
 
-API para gerenciamento de investimentos de usuários, desenvolvida em Java 17 com Spring Boot 3.  
-Este projeto implementa uma arquitetura RESTful, com documentação Swagger/OpenAPI, tratamento robusto de erros, uso de DTOs, separação de camadas e exemplos de testes para todos os endpoints.
+O objetivo do **Investaê** é ser seu assessor de investimentos completo, conectando todos os seus bancos e rentabilidades em um único lugar. Chega de ficar acessando vários apps!  
+Esta API faz parte do nosso app mobile, centralizando seus investimentos, orientando suas decisões e tornando tudo simples, visual e inteligente.
+
+Foi aí que decidimos criar o Investaê:  
+Um app que centraliza seus investimentos, te orienta e torna tudo simples, visual e inteligente.
 
 ---
 
-## Sumário
+## 📚 Sumário
 
 - [Sobre o Projeto](#sobre-o-projeto)
-- [Integrantes](#integrantes)
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Como Executar](#como-executar)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Documentação da API (Swagger)](#documentação-da-api-swagger)
-- [Endpoints e Exemplos de Testes](#endpoints-e-exemplos-de-testes)
+- [👥 Integrantes](#integrantes)
+- [🛠️ Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [▶️ Como Executar](#como-executar)
+- [📁 Estrutura do Projeto](#estrutura-do-projeto)
+- [📝 Documentação da API (Swagger)](#documentação-da-api-swagger)
+- [🔗 Endpoints e Exemplos de Testes](#endpoints-e-exemplos-de-testes)
   - [Usuários Investidores](#usuários-investidores)
   - [Investimentos](#investimentos)
   - [Bancos](#bancos)
   - [Tipos de Investimento](#tipos-de-investimento)
-- [Tratamento de Erros](#tratamento-de-erros)
-- [Padrões e Boas Práticas](#padrões-e-boas-práticas)
-- [Licença](#licença)
+- [⚠️ Tratamento de Erros](#tratamento-de-erros)
+- [💡 Padrões e Boas Práticas](#padrões-e-boas-práticas)
+- [📝 Licença](#licença)
 
 ---
 
 ## Sobre o Projeto
 
 O **Investaê** é uma API RESTful para cadastro de usuários investidores, seus investimentos, rentabilidades diárias, bancos e tipos de investimento.  
-O projeto segue boas práticas de arquitetura, separação de camadas, uso de DTOs, tratamento de erros e documentação automática.
+O projeto segue boas práticas de arquitetura, separação de camadas, uso de DTOs, tratamento de erros e documentação automática.  
+Esta API está integrada ao nosso aplicativo mobile, proporcionando uma experiência centralizada e inteligente para o investidor.
+
+Repositório oficial: [https://github.com/JuliaAzevedoLins/ChallengeXP_Java](https://github.com/JuliaAzevedoLins/ChallengeXP_Java)
 
 ---
 
-## Integrantes
+## 👥 Integrantes
 
 |        Nome Completo         |  RMs  |
 |------------------------------|-------|
@@ -41,11 +47,9 @@ O projeto segue boas práticas de arquitetura, separação de camadas, uso de DT
 | Luis Gustavo Barreto Garrido | 99210 |
 | Victor Hugo Aranda Forte     | 99667 |
 
-*Preencha com os nomes e RMs dos integrantes do grupo.*
-
 ---
 
-## Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
 - Java 17
 - Spring Boot 3.x
@@ -56,12 +60,12 @@ O projeto segue boas práticas de arquitetura, separação de camadas, uso de DT
 
 ---
 
-## Como Executar
+## ▶️ Como Executar
 
 1. **Clone o repositório:**
    ```sh
-   git clone https://github.com/seu-usuario/investae.git
-   cd investae
+   git clone https://github.com/JuliaAzevedoLins/ChallengeXP_Java.git
+   cd ChallengeXP_Java
    ```
 
 2. **Configure o banco de dados Oracle no arquivo `src/main/resources/application.properties`.**
@@ -82,7 +86,7 @@ O projeto segue boas práticas de arquitetura, separação de camadas, uso de DT
 
 ---
 
-## Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
 src/
@@ -107,18 +111,18 @@ src/
 
 ---
 
-## Documentação da API (Swagger)
+## 📝 Documentação da API (Swagger)
 
 Acesse a documentação interativa em:  
 [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ---
 
-## Endpoints e Exemplos de Testes
+## 🔗 Endpoints e Exemplos de Testes
 
-### Usuários Investidores
+### 👤 Usuários Investidores
 
-#### Criar novo usuário investidor
+#### ➕ Criar novo usuário investidor
 
 - **POST** `/api/usuario-investimentos`
 - **Body:**
@@ -132,7 +136,7 @@ Acesse a documentação interativa em:
   "Usuário criado com sucesso."
   ```
 
-#### Listar todos os usuários investidores
+#### 📋 Listar todos os usuários investidores
 
 - **GET** `/api/usuario-investimentos`
 - **Resposta:** `200 OK`
@@ -146,7 +150,7 @@ Acesse a documentação interativa em:
   ]
   ```
 
-#### Buscar usuário investidor por CPF
+#### 🔍 Buscar usuário investidor por CPF
 
 - **GET** `/api/usuario-investimentos/{cpf}`
 - **Resposta:** `200 OK`
@@ -158,7 +162,7 @@ Acesse a documentação interativa em:
   }
   ```
 
-#### Deletar usuário investidor por CPF
+#### 🗑️ Deletar usuário investidor por CPF
 
 - **DELETE** `/api/usuario-investimentos/{cpf}`
 - **Resposta:** `200 OK`
@@ -168,9 +172,9 @@ Acesse a documentação interativa em:
 
 ---
 
-### Investimentos
+### 💰 Investimentos
 
-#### Criar novo investimento para um usuário
+#### ➕ Criar novo investimento para um usuário
 
 - **POST** `/api/investimentos`
 - **Body:**
@@ -204,7 +208,7 @@ Acesse a documentação interativa em:
   "Investimento(s) criado(s) com sucesso"
   ```
 
-#### Listar todos os investimentos
+#### 📋 Listar todos os investimentos
 
 - **GET** `/api/investimentos`
 - **Resposta:** `200 OK`
@@ -225,7 +229,7 @@ Acesse a documentação interativa em:
   ]
   ```
 
-#### Listar investimentos por CPF do usuário
+#### 🔍 Listar investimentos por CPF do usuário
 
 - **GET** `/api/investimentos/usuario/{cpf}`
 - **Resposta:** `200 OK`
@@ -239,7 +243,7 @@ Acesse a documentação interativa em:
   ]
   ```
 
-#### Atualizar investimento pelo ID
+#### ✏️ Atualizar investimento pelo ID
 
 - **PUT** `/api/investimentos/{id}`
 - **Body:** (igual ao POST de investimento)
@@ -248,7 +252,7 @@ Acesse a documentação interativa em:
   "Investimento atualizado com sucesso"
   ```
 
-#### Deletar investimento pelo ID
+#### 🗑️ Deletar investimento pelo ID
 
 - **DELETE** `/api/investimentos/{id}`
 - **Resposta:** `200 OK`
@@ -258,9 +262,9 @@ Acesse a documentação interativa em:
 
 ---
 
-### Bancos
+### 🏦 Bancos
 
-#### Listar bancos por CPF
+#### 📋 Listar bancos por CPF
 
 - **GET** `/api/bancos/{cpf}`
 - **Resposta:** `200 OK`
@@ -275,9 +279,9 @@ Acesse a documentação interativa em:
 
 ---
 
-### Tipos de Investimento
+### 📊 Tipos de Investimento
 
-#### Listar tipos de investimento por CPF
+#### 📋 Listar tipos de investimento por CPF
 
 - **GET** `/api/tipos-investimento/{cpf}`
 - **Resposta:** `200 OK`
@@ -291,7 +295,7 @@ Acesse a documentação interativa em:
 
 ---
 
-## Tratamento de Erros
+## ⚠️ Tratamento de Erros
 
 - **Campos obrigatórios:** Retorna `400 Bad Request` com mensagem clara.
 - **Enum inválido:** Retorna `400 Bad Request` e lista os valores permitidos.
@@ -307,7 +311,7 @@ Exemplo de erro para enum inválido:
 
 ---
 
-## Padrões e Boas Práticas
+## 💡 Padrões e Boas Práticas
 
 - **Separação de camadas:** Controller, Service, Repository, DTO, Model.
 - **Uso de DTOs:** Nenhum endpoint retorna entidades diretamente.
@@ -316,7 +320,9 @@ Exemplo de erro para enum inválido:
 - **Enums para valores fixos:** Exemplo: `TipoInvestimentoEnum`.
 - **JavaDoc:** Presente nas principais classes e métodos.
 
-## Licença
+---
+
+## 📝 Licença
 
 Este projeto é livre para fins acadêmicos.
 
