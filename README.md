@@ -52,12 +52,12 @@ Repositório oficial: [https://github.com/JuliaAzevedoLins/ChallengeXP_Java](htt
 
 ## 🛠️ Tecnologias Utilizadas
 
-- Java 17 ☕
-- Spring Boot 3.x 🌱
-- Spring Data JPA 🗄️
-- Oracle Database (pode ser adaptado para H2) 🛢️
-- Swagger/OpenAPI 📖
-- JUnit 5 🧪
+- Java 17
+- Spring Boot 3.x
+- Spring Data JPA
+- Oracle Database (pode ser adaptado para H2)
+- Swagger/OpenAPI
+- JUnit 5
 
 ---
 
