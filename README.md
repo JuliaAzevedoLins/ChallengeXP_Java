@@ -21,6 +21,7 @@ Um app que centraliza seus investimentos, te orienta e torna tudo simples, visua
   - [Investimentos](#investimentos)
   - [Bancos](#bancos)
   - [Tipos de Investimento](#tipos-de-investimento)
+- [⚙️ Regras de Negócio](#regras-de-negócio)
 - [⚠️ Tratamento de Erros](#tratamento-de-erros)
 - [💡 Padrões e Boas Práticas](#padrões-e-boas-práticas)
 - [📝 Licença](#licença)
@@ -51,12 +52,12 @@ Repositório oficial: [https://github.com/JuliaAzevedoLins/ChallengeXP_Java](htt
 
 ## 🛠️ Tecnologias Utilizadas
 
-- Java 17
-- Spring Boot 3.x
-- Spring Data JPA
-- Oracle Database (pode ser adaptado para H2)
-- Swagger/OpenAPI
-- JUnit 5
+- Java 17 ☕
+- Spring Boot 3.x 🌱
+- Spring Data JPA 🗄️
+- Oracle Database (pode ser adaptado para H2) 🛢️
+- Swagger/OpenAPI 📖
+- JUnit 5 🧪
 
 ---
 
@@ -292,6 +293,17 @@ Acesse a documentação interativa em:
     }
   ]
   ```
+
+---
+
+## ⚙️ Regras de Negócio
+
+- **Centralização e Consulta:** O Investaê centraliza todos os investimentos do usuário, permitindo visualizar e gerenciar aplicações de diferentes bancos em um só lugar.
+- **Cadastro e Gerenciamento:** Apenas usuários investidores podem cadastrar, atualizar ou remover seus próprios investimentos.
+- **Rentabilidade Diária:** Cada investimento pode ter uma ou mais rentabilidades diárias associadas, permitindo o acompanhamento detalhado da evolução.
+- **Bancos e Tipos de Investimento são apenas consultáveis:**  
+  Os controllers de **Banco** (`/api/bancos`) e **Tipo de Investimento** (`/api/tipos-investimento`) possuem apenas métodos GET, pois, pela regra de negócio, bancos e tipos de investimento são derivados dos investimentos cadastrados pelo usuário. Não é permitido criar, editar ou remover bancos ou tipos de investimento diretamente via API — eles são sempre obtidos a partir dos investimentos já registrados.
+- **Validação e Segurança:** Todos os dados são validados e tratados para garantir integridade e segurança das informações.
 
 ---
 
