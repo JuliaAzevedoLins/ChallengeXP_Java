@@ -1,6 +1,6 @@
 package com.challenge.investimentos.investimentos_api.controller;
 
-import com.challenge.investimentos.investimentos_api.dto.BancoDTO;
+import com.challenge.investimentos.investimentos_api.model.Banco;
 import com.challenge.investimentos.investimentos_api.service.BancoService;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,7 +44,7 @@ public class BancoController {
         @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
     @GetMapping("/{cpf}")
-    public List<BancoDTO> listarBancosPorCpf(@PathVariable String cpf) {
+    public List<Banco> listarBancosPorCpf(@PathVariable String cpf) {
         return bancoService.listarBancosPorCpf(cpf);
     }
 }

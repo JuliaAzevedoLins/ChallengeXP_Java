@@ -3,6 +3,7 @@ package com.challenge.investimentos.investimentos_api.service;
 import com.challenge.investimentos.investimentos_api.dto.InvestimentoDTO;
 import com.challenge.investimentos.investimentos_api.dto.RentabilidadeDiariaDTO;
 import com.challenge.investimentos.investimentos_api.dto.UsuarioInvestimentoDTO;
+import com.challenge.investimentos.investimentos_api.model.Banco;
 import com.challenge.investimentos.investimentos_api.model.Investimento;
 import com.challenge.investimentos.investimentos_api.model.RentabilidadeDiaria;
 import com.challenge.investimentos.investimentos_api.model.UsuarioInvestimento;
@@ -10,9 +11,11 @@ import com.challenge.investimentos.investimentos_api.repository.UsuarioInvestime
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +38,7 @@ public class UsuarioInvestimentoService {
      * @param dto DTO contendo os dados do usuário e seus investimentos
      * @return ResponseEntity com mensagem de sucesso ou erro
      */
+    @Transactional
     public ResponseEntity<String> salvarInvestimentos(UsuarioInvestimentoDTO dto) {
         String cpf = dto.getCpfIdentificacao();
         if (cpf == null || cpf.trim().isEmpty()) {
@@ -53,7 +57,7 @@ public class UsuarioInvestimentoService {
 
         // Limpa a lista de investimentos antigos, se quiser sobrescrever
         if (usuario.getInvestimentos() == null) {
-            usuario.setInvestimentos(new java.util.ArrayList<>());
+            usuario.setInvestimentos(new ArrayList<>());
         } else {
             usuario.getInvestimentos().clear();
         }
@@ -61,8 +65,10 @@ public class UsuarioInvestimentoService {
         List<Investimento> investimentos = investimentosDTO.stream().map(investDTO -> {
             Investimento investimento = new Investimento();
             investimento.setUsuarioInvestimento(usuario);
-            investimento.setNomeBanco(investDTO.getNomeBanco());
-            investimento.setCodigoBancario(investDTO.getCodigoBancario());
+            
+            // Cria e define o Value Object Banco
+            investimento.setBanco(new Banco(investDTO.getNomeBanco(), investDTO.getCodigoBancario()));
+            
             investimento.setTipoInvestimento(investDTO.getTipoInvestimento());
             investimento.setNomeInvestimento(investDTO.getNomeInvestimento());
             investimento.setMontanteInicial(investDTO.getMontanteInicial());
@@ -73,18 +79,14 @@ public class UsuarioInvestimentoService {
             List<RentabilidadeDiariaDTO> rentabilidadeDTOs = investDTO.getRentabilidadeDiaria();
             if (rentabilidadeDTOs != null && !rentabilidadeDTOs.isEmpty()) {
                 List<RentabilidadeDiaria> rentabilidades = rentabilidadeDTOs.stream().map(rdDTO -> {
-                    RentabilidadeDiaria rd = new RentabilidadeDiaria();
-                    // Ajuste para evitar erro de data inválida
+                    LocalDate data;
                     try {
-                        rd.setDataRentabilidadeDiaria(LocalDate.parse(rdDTO.getDataRentabilidadeDiaria(), FORMATTER));
+                        data = LocalDate.parse(rdDTO.getDataRentabilidadeDiaria(), FORMATTER);
                     } catch (Exception e) {
-                        rd.setDataRentabilidadeDiaria(null);
+                        data = null;
                     }
-                    rd.setValorDiarioAcao(rdDTO.getValorDiarioAcao());
-                    rd.setTaxaDiarioRentabilidade(rdDTO.getTaxaDiarioRentabilidade());
-                    rd.setMontanteAcumuladoDiario(rdDTO.getMontanteAcumuladoDiario());
-                    rd.setInvestimento(investimento);
-                    return rd;
+                    // Usa o construtor completo do Value Object
+                    return new RentabilidadeDiaria(data, rdDTO.getValorDiarioAcao(), rdDTO.getTaxaDiarioRentabilidade(), rdDTO.getMontanteAcumuladoDiario());
                 }).collect(Collectors.toList());
 
                 investimento.setRentabilidadeDiaria(rentabilidades);
@@ -104,6 +106,7 @@ public class UsuarioInvestimentoService {
      *
      * @return ResponseEntity com a lista de usuários investidores
      */
+    @Transactional(readOnly = true)
     public ResponseEntity<List<UsuarioInvestimento>> listarTodosUsuarios() {
         return ResponseEntity.ok(usuarioInvestimentoRepository.findAll());
     }
@@ -114,6 +117,7 @@ public class UsuarioInvestimentoService {
      * @param cpf CPF do usuário investidor
      * @return ResponseEntity com o usuário encontrado ou erro
      */
+    @Transactional(readOnly = true)
     public ResponseEntity<?> buscarPorCpf(String cpf) {
         UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpfIdentificacao(cpf);
         if (usuario == null) {
@@ -128,6 +132,7 @@ public class UsuarioInvestimentoService {
      * @param cpfIdentificacao CPF de identificação do novo usuário
      * @return ResponseEntity com mensagem de sucesso ou erro
      */
+    @Transactional
     public ResponseEntity<String> criarUsuarioInvestimento(String cpfIdentificacao) {
         if (cpfIdentificacao == null || cpfIdentificacao.trim().isEmpty()) {
             return ResponseEntity.badRequest().body("CPF do usuário é obrigatório.");
@@ -150,6 +155,7 @@ public class UsuarioInvestimentoService {
      * @param cpf CPF do usuário investidor
      * @return ResponseEntity com mensagem de sucesso ou erro
      */
+    @Transactional
     public ResponseEntity<String> deletarPorCpf(String cpf) {
         UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpfIdentificacao(cpf);
         if (usuario == null) {

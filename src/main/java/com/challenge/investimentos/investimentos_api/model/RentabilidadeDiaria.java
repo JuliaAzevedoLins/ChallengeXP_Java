@@ -1,130 +1,54 @@
+// src/main/java/com/challenge/investimentos/investimentos_api/model/RentabilidadeDiaria.java
 package com.challenge.investimentos.investimentos_api.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.io.Serializable;
 
-/**
- * Entidade que representa a rentabilidade diária de um investimento.
- * Contém informações sobre a data, valor diário da ação, taxa de rentabilidade diária,
- * montante acumulado diário e a relação com o investimento.
- */
-@Entity
-@Table(name = "RENTABILIDADE_DIARIA")
-public class RentabilidadeDiaria {
+// A anotação @Entity é removida pois agora é um Value Object.
+// Agora ela deve ser @Embeddable
+@Embeddable
+public class RentabilidadeDiaria implements Serializable {
 
-    /** Identificador único da rentabilidade diária. */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // O campo ID foi removido.
+    // O campo @ManyToOne com @JsonBackReference também foi removido, pois não haverá mais uma relação de entidade.
 
-    /** Investimento associado a esta rentabilidade diária. */
-    @ManyToOne
-    @JoinColumn(name = "INVESTIMENTO_ID")
-    @JsonBackReference
-    private Investimento investimento;
-
-    /** Data da rentabilidade diária. */
     @Column(name = "DATA_RENTABILIDADE_DIARIA")
     private LocalDate dataRentabilidadeDiaria;
 
-    /** Valor diário da ação. */
     @Column(name = "VALOR_DIARIO_ACAO")
     private Double valorDiarioAcao;
 
-    /** Taxa de rentabilidade diária. */
     @Column(name = "TAXA_DIARIO_RENTABILIDADE")
     private String taxaDiarioRentabilidade;
 
-    /** Montante acumulado diário. */
     @Column(name = "MONTANTE_ACUMULADO_DIARIO")
     private Double montanteAcumuladoDiario;
 
-    /**
-     * Obtém o identificador da rentabilidade diária.
-     * @return id da rentabilidade diária
-     */
-    public Long getId() {
-        return id;
+    public RentabilidadeDiaria() {}
+    
+    // Construtor completo para imutabilidade
+    public RentabilidadeDiaria(LocalDate dataRentabilidadeDiaria, Double valorDiarioAcao, String taxaDiarioRentabilidade, Double montanteAcumuladoDiario) {
+        this.dataRentabilidadeDiaria = dataRentabilidadeDiaria;
+        this.valorDiarioAcao = valorDiarioAcao;
+        this.taxaDiarioRentabilidade = taxaDiarioRentabilidade;
+        this.montanteAcumuladoDiario = montanteAcumuladoDiario;
     }
 
-    /**
-     * Obtém o investimento associado.
-     * @return investimento associado
-     */
-    public Investimento getInvestimento() {
-        return investimento;
-    }
-
-    /**
-     * Define o investimento associado.
-     * @param investimento investimento associado
-     */
-    public void setInvestimento(Investimento investimento) {
-        this.investimento = investimento;
-    }
-
-    /**
-     * Obtém a data da rentabilidade diária.
-     * @return data da rentabilidade diária
-     */
+    // Apenas getters são necessários, pois o objeto é imutável
     public LocalDate getDataRentabilidadeDiaria() {
         return dataRentabilidadeDiaria;
     }
 
-    /**
-     * Define a data da rentabilidade diária.
-     * @param dataRentabilidadeDiaria data da rentabilidade diária
-     */
-    public void setDataRentabilidadeDiaria(LocalDate dataRentabilidadeDiaria) {
-        this.dataRentabilidadeDiaria = dataRentabilidadeDiaria;
-    }
-
-    /**
-     * Obtém o valor diário da ação.
-     * @return valor diário da ação
-     */
     public Double getValorDiarioAcao() {
         return valorDiarioAcao;
     }
 
-    /**
-     * Define o valor diário da ação.
-     * @param valorDiarioAcao valor diário da ação
-     */
-    public void setValorDiarioAcao(Double valorDiarioAcao) {
-        this.valorDiarioAcao = valorDiarioAcao;
-    }
-
-    /**
-     * Obtém a taxa de rentabilidade diária.
-     * @return taxa de rentabilidade diária
-     */
     public String getTaxaDiarioRentabilidade() {
         return taxaDiarioRentabilidade;
     }
 
-    /**
-     * Define a taxa de rentabilidade diária.
-     * @param taxaDiarioRentabilidade taxa de rentabilidade diária
-     */
-    public void setTaxaDiarioRentabilidade(String taxaDiarioRentabilidade) {
-        this.taxaDiarioRentabilidade = taxaDiarioRentabilidade;
-    }
-
-    /**
-     * Obtém o montante acumulado diário.
-     * @return montante acumulado diário
-     */
     public Double getMontanteAcumuladoDiario() {
         return montanteAcumuladoDiario;
-    }
-
-    /**
-     * Define o montante acumulado diário.
-     * @param montanteAcumuladoDiario montante acumulado diário
-     */
-    public void setMontanteAcumuladoDiario(Double montanteAcumuladoDiario) {
-        this.montanteAcumuladoDiario = montanteAcumuladoDiario;
     }
 }

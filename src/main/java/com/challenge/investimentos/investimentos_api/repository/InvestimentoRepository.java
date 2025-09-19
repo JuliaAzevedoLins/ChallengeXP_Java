@@ -21,11 +21,10 @@ public interface InvestimentoRepository extends JpaRepository<Investimento, Long
     List<Investimento> findByUsuarioInvestimento(UsuarioInvestimento usuarioInvestimento);
 
     /**
-     * Busca todos os investimentos distintos associados a um CPF de usuário investidor.
-     * Útil para consultas de bancos e tipos de investimento por CPF.
+     * Busca todos os investimentos associados a um CPF de usuário investidor.
      *
      * @param cpf CPF do usuário investidor
-     * @return lista de investimentos distintos do usuário
+     * @return lista de investimentos do usuário
      */
-    List<Investimento> findDistinctByUsuarioInvestimento_CpfIdentificacao(String cpf);
+    List<Investimento> findByUsuarioInvestimento_CpfIdentificacao(String cpf);
 }
