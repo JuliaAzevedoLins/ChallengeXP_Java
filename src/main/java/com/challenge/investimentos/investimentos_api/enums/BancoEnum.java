@@ -9,7 +9,12 @@ public enum BancoEnum {
     ITAU("Itaú", 341),
     BRADESCO("Bradesco", 237),
     SANTANDER("Santander", 33),
-    CAIXA("Caixa Econômica", 104);
+    CAIXA("Caixa Econômica", 104),
+    BANCO_DO_BRASIL("Banco do Brasil", 1),
+    INTER("Inter", 77),
+    BTG_PACTUAL("BTG Pactual", 208),
+    XP_INVESTIMENTOS("XP Investimentos", 348),
+    C6_BANK("C6 Bank", 336);
 
     private final String nomeBanco;
     private final int codigoBancario;
