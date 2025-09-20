@@ -3,81 +3,126 @@ package com.challenge.investimentos.investimentos_api.model;
 import com.challenge.investimentos.investimentos_api.enums.TipoInvestimentoEnum;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "INVESTIMENTO")
-public class Investimento implements Serializable {
+public class Investimento {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "investimento_seq")
+    @SequenceGenerator(name = "investimento_seq", sequenceName = "INVESTIMENTO_SEQ", allocationSize = 1)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "USUARIO_INVESTIMENTO_ID", nullable = false)
-    @JsonBackReference
-    private UsuarioInvestimento usuarioInvestimento;
+    @Column(name = "NOME_BANCO")
+    private String nomeBanco;
 
-    // 🟢 Mapeamento correto do Value Object Banco
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "nomeBanco", column = @Column(name = "BANCO_NOME")),
-        @AttributeOverride(name = "codigoBancario", column = @Column(name = "BANCO_CODIGO"))
-    })
-    private Banco banco;
-
-    @Column(name = "TIPO_INVESTIMENTO")
-    @Enumerated(EnumType.STRING)
-    private TipoInvestimentoEnum tipoInvestimento;
-
-    @Column(name = "NOME_INVESTIMENTO")
+    @Column(name = "NOME_INVESTIMENTO", nullable = false)
     private String nomeInvestimento;
 
-    @Column(name = "MONTANTE_INICIAL")
-    private Double montanteInicial;
+    @Column(name = "MONTANTE_INICIAL", precision = 15, scale = 2)
+    private BigDecimal montanteInicial;
 
-    @Column(name = "VALOR_INICIAL_ACAO")
-    private Double valorInicialAcao;
+    @Column(name = "VALOR_INICIAL_ACAO", precision = 15, scale = 2)
+    private BigDecimal valorInicialAcao;
 
-    @Column(name = "TAXA_RENTABILIDADE")
-    private String taxaRentabilidade;
+    @Column(name = "TAXA_RENTABILIDADE", precision = 10, scale = 4)
+    private BigDecimal taxaRentabilidade;
 
     @Column(name = "NUMERO_ACOES_INICIAL")
     private Integer numeroAcoesInicial;
 
-    @ElementCollection
-    @CollectionTable(name = "RENTABILIDADE_DIARIA_TABLE", joinColumns = @JoinColumn(name = "INVESTIMENTO_ID"))
-    private List<RentabilidadeDiaria> rentabilidadeDiaria;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TIPO_INVESTIMENTO")
+    private TipoInvestimentoEnum tipoInvestimento;
 
-    // Getters e Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @ManyToOne
+    @JoinColumn(name = "USUARIO_INVESTIMENTO_ID")
+    @JsonBackReference // <-- Anotação adicionada para quebrar o loop
+    private UsuarioInvestimento usuarioInvestimento;
 
-    public UsuarioInvestimento getUsuarioInvestimento() { return usuarioInvestimento; }
-    public void setUsuarioInvestimento(UsuarioInvestimento usuarioInvestimento) { this.usuarioInvestimento = usuarioInvestimento; }
+    @OneToMany(mappedBy = "investimento", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RentabilidadeDiaria> rentabilidadeDiaria = new ArrayList<>();
 
-    public Banco getBanco() { return banco; }
-    public void setBanco(Banco banco) { this.banco = banco; }
+    public Long getId() {
+        return id;
+    }
 
-    public TipoInvestimentoEnum getTipoInvestimento() { return tipoInvestimento; }
-    public void setTipoInvestimento(TipoInvestimentoEnum tipoInvestimento) { this.tipoInvestimento = tipoInvestimento; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getNomeInvestimento() { return nomeInvestimento; }
-    public void setNomeInvestimento(String nomeInvestimento) { this.nomeInvestimento = nomeInvestimento; }
+    public String getNomeBanco() {
+        return nomeBanco;
+    }
 
-    public Double getMontanteInicial() { return montanteInicial; }
-    public void setMontanteInicial(Double montanteInicial) { this.montanteInicial = montanteInicial; }
+    public void setNomeBanco(String nomeBanco) {
+        this.nomeBanco = nomeBanco;
+    }
 
-    public Double getValorInicialAcao() { return valorInicialAcao; }
-    public void setValorInicialAcao(Double valorInicialAcao) { this.valorInicialAcao = valorInicialAcao; }
+    public String getNomeInvestimento() {
+        return nomeInvestimento;
+    }
 
-    public String getTaxaRentabilidade() { return taxaRentabilidade; }
-    public void setTaxaRentabilidade(String taxaRentabilidade) { this.taxaRentabilidade = taxaRentabilidade; }
+    public void setNomeInvestimento(String nomeInvestimento) {
+        this.nomeInvestimento = nomeInvestimento;
+    }
 
-    public Integer getNumeroAcoesInicial() { return numeroAcoesInicial; }
-    public void setNumeroAcoesInicial(Integer numeroAcoesInicial) { this.numeroAcoesInicial = numeroAcoesInicial; }
+    public BigDecimal getMontanteInicial() {
+        return montanteInicial;
+    }
 
-    public List<RentabilidadeDiaria> getRentabilidadeDiaria() { return rentabilidadeDiaria; }
-    public void setRentabilidadeDiaria(List<RentabilidadeDiaria> rentabilidadeDiaria) { this.rentabilidadeDiaria = rentabilidadeDiaria; }
+    public void setMontanteInicial(BigDecimal montanteInicial) {
+        this.montanteInicial = montanteInicial;
+    }
+
+    public BigDecimal getValorInicialAcao() {
+        return valorInicialAcao;
+    }
+
+    public void setValorInicialAcao(BigDecimal valorInicialAcao) {
+        this.valorInicialAcao = valorInicialAcao;
+    }
+
+    public BigDecimal getTaxaRentabilidade() {
+        return taxaRentabilidade;
+    }
+
+    public void setTaxaRentabilidade(BigDecimal taxaRentabilidade) {
+        this.taxaRentabilidade = taxaRentabilidade;
+    }
+
+    public Integer getNumeroAcoesInicial() {
+        return numeroAcoesInicial;
+    }
+
+    public void setNumeroAcoesInicial(Integer numeroAcoesInicial) {
+        this.numeroAcoesInicial = numeroAcoesInicial;
+    }
+
+    public TipoInvestimentoEnum getTipoInvestimento() {
+        return tipoInvestimento;
+    }
+
+    public void setTipoInvestimento(TipoInvestimentoEnum tipoInvestimento) {
+        this.tipoInvestimento = tipoInvestimento;
+    }
+
+    public UsuarioInvestimento getUsuarioInvestimento() {
+        return usuarioInvestimento;
+    }
+
+    public void setUsuarioInvestimento(UsuarioInvestimento usuarioInvestimento) {
+        this.usuarioInvestimento = usuarioInvestimento;
+    }
+
+    public List<RentabilidadeDiaria> getRentabilidadeDiaria() {
+        return rentabilidadeDiaria;
+    }
+
+    public void setRentabilidadeDiaria(List<RentabilidadeDiaria> rentabilidadeDiaria) {
+        this.rentabilidadeDiaria = rentabilidadeDiaria;
+    }
 }

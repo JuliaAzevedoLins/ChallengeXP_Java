@@ -1,6 +1,5 @@
 package com.challenge.investimentos.investimentos_api.controller;
 
-import com.challenge.investimentos.investimentos_api.model.Banco;
 import com.challenge.investimentos.investimentos_api.service.BancoService;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,11 +31,11 @@ public class BancoController {
      * Lista os bancos associados ao CPF informado.
      *
      * @param cpf CPF do usuário investidor
-     * @return Lista de bancos associados ao CPF
+     * @return Lista de nomes de bancos (String) associados ao CPF
      */
     @Operation(
         summary = "Lista bancos por CPF",
-        description = "Retorna uma lista de bancos associados ao CPF informado."
+        description = "Retorna uma lista de nomes de bancos associados ao CPF informado."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Lista de bancos retornada com sucesso"),
@@ -44,7 +43,7 @@ public class BancoController {
         @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
     @GetMapping("/{cpf}")
-    public List<Banco> listarBancosPorCpf(@PathVariable String cpf) {
+    public List<String> listarBancosPorCpf(@PathVariable String cpf) { // <-- Tipo de retorno alterado para List<String>
         return bancoService.listarBancosPorCpf(cpf);
     }
 }

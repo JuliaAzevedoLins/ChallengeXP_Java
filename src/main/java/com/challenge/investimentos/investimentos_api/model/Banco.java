@@ -2,16 +2,17 @@ package com.challenge.investimentos.investimentos_api.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import java.io.Serializable;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Embeddable
-public class Banco implements Serializable {
+public class Banco {
 
     @Column(name = "NOME_BANCO")
     private String nomeBanco;
 
     @Column(name = "CODIGO_BANCARIO")
+    @JsonProperty(access = Access.READ_ONLY) // não enviado pelo cliente
     private Integer codigoBancario;
 
     public Banco() {}
@@ -21,25 +22,19 @@ public class Banco implements Serializable {
         this.codigoBancario = codigoBancario;
     }
 
-    // Getters
     public String getNomeBanco() {
         return nomeBanco;
+    }
+
+    public void setNomeBanco(String nomeBanco) {
+        this.nomeBanco = nomeBanco;
     }
 
     public Integer getCodigoBancario() {
         return codigoBancario;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Banco banco = (Banco) o;
-        return Objects.equals(nomeBanco, banco.nomeBanco) && Objects.equals(codigoBancario, banco.codigoBancario);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nomeBanco, codigoBancario);
+    public void setCodigoBancario(Integer codigoBancario) {
+        this.codigoBancario = codigoBancario;
     }
 }

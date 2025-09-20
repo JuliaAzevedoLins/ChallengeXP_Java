@@ -1,6 +1,6 @@
 package com.challenge.investimentos.investimentos_api.service;
 
-import com.challenge.investimentos.investimentos_api.model.Banco;
+
 import com.challenge.investimentos.investimentos_api.repository.InvestimentoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +28,13 @@ public class BancoService {
      * Lista os bancos distintos associados a um usuário investidor pelo CPF.
      *
      * @param cpf CPF do usuário investidor
-     * @return lista de Value Objects Banco associados ao CPF informado
+     * @return lista de nomes de bancos (String) associados ao CPF informado
      */
     @Transactional(readOnly = true)
-    public List<Banco> listarBancosPorCpf(String cpf) {
-        // Busca todos os investimentos e depois extrai os bancos distintos
+    public List<String> listarBancosPorCpf(String cpf) {
+        // Busca todos os investimentos e depois extrai os nomes dos bancos distintos
         return investimentoRepository.findByUsuarioInvestimento_CpfIdentificacao(cpf).stream()
-                .map(investimento -> investimento.getBanco())
+                .map(investimento -> investimento.getNomeBanco()) // <-- Linha corrigida
                 .distinct()
                 .collect(Collectors.toList());
     }
