@@ -158,7 +158,7 @@ Acesse a documentação interativa em:
 Desenvolvemos uma interface web simples para demonstrar o consumo da API de forma visual e interativa. Esta interface permite testar o fluxo completo da aplicação seguindo os passos básicos de uso.
 
 #### 📋 Passo 1: Tela Principal
-A interface apresenta uma tabela para visualizar investimentos e botões para as principais ações. Inicialmente, a tabela estará vazia pois ainda não há usuários cadastrados.
+A interface apresenta uma tabela para visualizar investimentos e botões para as principais ações.
 
 ![Interface Web - Página Principal](./imagens/interface-web-principal.png)
 
@@ -183,7 +183,7 @@ Com usuários e investimentos cadastrados, a tabela principal exibe todos os dad
 
 ![Interface Web - Dados Carregados](./imagens/interface-web-dados.png)
 
-*Tabela populada com investimentos reais. Mostra como os dados são organizados e apresentados ao usuário final, facilitando a visualização e gestão dos investimentos.*
+*Tabela populada com investimentos. Mostra como os dados são organizados e apresentados ao usuário final, facilitando a visualização e gestão dos investimentos.*
 
 ### 📸 Interface Swagger - Documentação Técnica
 
