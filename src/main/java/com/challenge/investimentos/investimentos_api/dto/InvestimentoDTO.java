@@ -9,7 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 /**
  * DTO que representa os dados de um investimento.
@@ -44,7 +44,7 @@ public class InvestimentoDTO {
 
     @Schema(example = "10")
     @NotNull(message = "numeroAcoesInicial é obrigatório")
-    @Positive(message = "numeroAcoesInicial deve ser maior que zero")
+    @PositiveOrZero(message = "numeroAcoesInicial deve ser zero ou maior")
     private Integer numeroAcoesInicial;
 
     @Schema(description = "Lista de rentabilidades diárias associadas ao investimento")
