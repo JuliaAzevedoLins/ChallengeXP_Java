@@ -45,7 +45,7 @@ public class UsuarioInvestimentoService {
             return ResponseEntity.badRequest().body("CPF do usuário é obrigatório.");
         }
 
-        if (usuarioInvestimentoRepository.findByCpfIdentificacao(cpfIdentificacao) != null) {
+    if (usuarioInvestimentoRepository.findByCpf_Cpf(cpfIdentificacao) != null) {
             return ResponseEntity.badRequest().body("Usuário com esse CPF já existe.");
         }
 
@@ -73,7 +73,7 @@ public class UsuarioInvestimentoService {
             return ResponseEntity.badRequest().body("CPF do usuário é obrigatório.");
         }
 
-        UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpfIdentificacao(cpf);
+    UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpf_Cpf(cpf);
         if (usuario == null) {
             return ResponseEntity.badRequest().body("Usuário com CPF " + cpf + " não encontrado.");
         }
@@ -156,7 +156,7 @@ public class UsuarioInvestimentoService {
      */
     @Transactional(readOnly = true)
     public ResponseEntity<?> buscarPorCpf(String cpf) {
-        UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpfIdentificacao(cpf);
+    UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpf_Cpf(cpf);
         if (usuario == null) {
             return ResponseEntity.notFound().build();
         }
@@ -170,7 +170,7 @@ public class UsuarioInvestimentoService {
      */
     @Transactional
     public ResponseEntity<String> deletarPorCpf(String cpf) {
-        UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpfIdentificacao(cpf);
+    UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpf_Cpf(cpf);
         if (usuario == null) {
             return ResponseEntity.notFound().build();
         }

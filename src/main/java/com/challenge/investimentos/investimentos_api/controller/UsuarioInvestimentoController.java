@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class UsuarioInvestimentoController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos enviados"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    public ResponseEntity<String> salvarInvestimentos(@RequestBody UsuarioInvestimentoDTO dto) {
+    public ResponseEntity<String> salvarInvestimentos(@Valid @RequestBody UsuarioInvestimentoDTO dto) {
         return service.salvarInvestimentos(dto);
     }
 
@@ -61,8 +62,11 @@ public class UsuarioInvestimentoController {
             @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    public ResponseEntity<List<UsuarioInvestimento>> listarTodosUsuarios() {
-        return service.listarTodosUsuarios();
+    public ResponseEntity<List<UsuarioInvestimentoDTO>> listarTodosUsuarios() {
+        ResponseEntity<List<UsuarioInvestimento>> resp = service.listarTodosUsuarios();
+        List<UsuarioInvestimento> body = resp.getBody();
+        List<UsuarioInvestimentoDTO> dtos = body != null ? body.stream().map(UsuarioInvestimentoDTO::fromEntity).toList() : List.of();
+        return ResponseEntity.status(resp.getStatusCode()).body(dtos);
     }
 
     /**
@@ -82,7 +86,16 @@ public class UsuarioInvestimentoController {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
     public ResponseEntity<?> buscarPorCpf(@PathVariable String cpf) {
-        return service.buscarPorCpf(cpf);
+        ResponseEntity<?> resp = service.buscarPorCpf(cpf);
+        if (!resp.getStatusCode().is2xxSuccessful()) {
+            return ResponseEntity.status(resp.getStatusCode()).build();
+        }
+        Object body = resp.getBody();
+        if (body instanceof UsuarioInvestimento usuario) {
+            UsuarioInvestimentoDTO dto = UsuarioInvestimentoDTO.fromEntity(usuario);
+            return ResponseEntity.ok(dto);
+        }
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -96,7 +109,7 @@ public class UsuarioInvestimentoController {
         summary = "Criar novo usuário investidor",
         description = "Cria um novo usuário investidor com os dados fornecidos (apenas CPF)"
     )
-    public ResponseEntity<String> criarUsuarioInvestimento(@RequestBody UsuarioCadastroDTO dto) {
+    public ResponseEntity<String> criarUsuarioInvestimento(@Valid @RequestBody UsuarioCadastroDTO dto) {
         return service.criarUsuarioInvestimento(dto.getCpfIdentificacao());
     }
 

@@ -19,9 +19,10 @@ public class UsuarioInvestimento implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** CPF do investidor (único na base). */
-    @Column(name = "CPF_IDENTIFICACAO", nullable = false, unique = true)
-    private String cpfIdentificacao;
+    /** CPF do investidor como Value Object. */
+    @Embedded
+    @AttributeOverride(name = "cpf", column = @Column(name = "CPF_IDENTIFICACAO", nullable = false, unique = true, length = 11, updatable = false))
+    private CpfVO cpf;
 
     /**
      * Relação 1:N com os investimentos do usuário.
@@ -40,12 +41,18 @@ public class UsuarioInvestimento implements Serializable {
         this.id = id;
     }
 
+    /**
+     * Getter compatível para o CPF (exposição como String normalizada).
+     */
     public String getCpfIdentificacao() {
-        return cpfIdentificacao;
+        return cpf != null ? cpf.getCpf() : null;
     }
 
+    /**
+     * Setter compatível para o CPF a partir de String (cria o VO internamente).
+     */
     public void setCpfIdentificacao(String cpfIdentificacao) {
-        this.cpfIdentificacao = cpfIdentificacao;
+        this.cpf = cpfIdentificacao != null ? new CpfVO(cpfIdentificacao) : null;
     }
 
     public List<Investimento> getInvestimentos() {

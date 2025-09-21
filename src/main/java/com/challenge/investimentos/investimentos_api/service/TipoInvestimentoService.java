@@ -33,7 +33,7 @@ public class TipoInvestimentoService {
      */
     @Transactional(readOnly = true)
     public List<TipoInvestimentoDTO> listarTiposPorCpf(String cpf) {
-        return investimentoRepository.findByUsuarioInvestimento_CpfIdentificacao(cpf).stream()
+    return investimentoRepository.findByUsuarioInvestimento_Cpf_Cpf(cpf).stream()
                 .map(i -> new TipoInvestimentoDTO(i.getTipoInvestimento().name()))
                 .distinct()
                 .collect(Collectors.toList());

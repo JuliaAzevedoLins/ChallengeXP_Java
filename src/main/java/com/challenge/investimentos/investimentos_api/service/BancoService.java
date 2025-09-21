@@ -33,7 +33,7 @@ public class BancoService {
     @Transactional(readOnly = true)
     public List<String> listarBancosPorCpf(String cpf) {
         // Busca todos os investimentos e depois extrai os nomes dos bancos distintos
-        return investimentoRepository.findByUsuarioInvestimento_CpfIdentificacao(cpf).stream()
+        return investimentoRepository.findByUsuarioInvestimento_Cpf_Cpf(cpf).stream()
                 .map(investimento -> investimento.getNomeBanco()) // <-- Linha corrigida
                 .distinct()
                 .collect(Collectors.toList());

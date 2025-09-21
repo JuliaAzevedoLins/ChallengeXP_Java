@@ -26,5 +26,5 @@ public interface InvestimentoRepository extends JpaRepository<Investimento, Long
      * @param cpf CPF do usuário investidor
      * @return lista de investimentos do usuário
      */
-    List<Investimento> findByUsuarioInvestimento_CpfIdentificacao(String cpf);
+    List<Investimento> findByUsuarioInvestimento_Cpf_Cpf(String cpf);
 }

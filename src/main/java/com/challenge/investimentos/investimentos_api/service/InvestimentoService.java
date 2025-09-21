@@ -58,7 +58,7 @@ public class InvestimentoService {
             return ResponseEntity.badRequest().body("CPF do usuário é obrigatório");
         }
 
-        UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpfIdentificacao(dto.getCpfIdentificacao());
+    UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpf_Cpf(dto.getCpfIdentificacao());
         if (usuario == null) {
             return ResponseEntity.badRequest().body("Usuário com CPF " + dto.getCpfIdentificacao() + " não encontrado");
         }
@@ -123,7 +123,7 @@ public class InvestimentoService {
      */
     @Transactional(readOnly = true)
     public ResponseEntity<List<Investimento>> listarPorCpf(String cpf) {
-        UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpfIdentificacao(cpf);
+    UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpf_Cpf(cpf);
         if (usuario == null) return ResponseEntity.notFound().build();
 
         List<Investimento> investimentos = investimentoRepository.findByUsuarioInvestimento(usuario);

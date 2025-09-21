@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class InvestimentoController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos enviados"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    public ResponseEntity<String> criarInvestimento(@RequestBody UsuarioInvestimentoDTO dto) {
+    public ResponseEntity<String> criarInvestimento(@Valid @RequestBody UsuarioInvestimentoDTO dto) {
         return investimentoService.criarInvestimento(dto);
     }
 
@@ -64,7 +65,7 @@ public class InvestimentoController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos enviados"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    public ResponseEntity<String> salvarInvestimentos(@RequestBody UsuarioInvestimentoDTO dto) {
+    public ResponseEntity<String> salvarInvestimentos(@Valid @RequestBody UsuarioInvestimentoDTO dto) {
         return investimentoService.salvarInvestimentos(dto);
     }
 
@@ -83,7 +84,7 @@ public class InvestimentoController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos enviados"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    public ResponseEntity<String> atualizarInvestimento(@PathVariable Long id, @RequestBody InvestimentoDTO dto) {
+    public ResponseEntity<String> atualizarInvestimento(@PathVariable Long id, @Valid @RequestBody InvestimentoDTO dto) {
         return investimentoService.atualizarInvestimento(id, dto);
     }
 
@@ -98,8 +99,11 @@ public class InvestimentoController {
             @ApiResponse(responseCode = "200", description = "Lista de investimentos retornada com sucesso"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    public ResponseEntity<List<Investimento>> listarTodosInvestimentos() {
-        return investimentoService.listarTodos();
+    public ResponseEntity<List<InvestimentoDTO>> listarTodosInvestimentos() {
+        ResponseEntity<List<Investimento>> resp = investimentoService.listarTodos();
+        List<Investimento> body = resp.getBody();
+        List<InvestimentoDTO> dtos = body != null ? body.stream().map(InvestimentoDTO::fromEntity).toList() : List.of();
+        return ResponseEntity.status(resp.getStatusCode()).body(dtos);
     }
 
     /**
@@ -115,8 +119,14 @@ public class InvestimentoController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    public ResponseEntity<List<Investimento>> listarPorCpf(@PathVariable String cpf) {
-        return investimentoService.listarPorCpf(cpf);
+    public ResponseEntity<List<InvestimentoDTO>> listarPorCpf(@PathVariable String cpf) {
+        ResponseEntity<List<Investimento>> resp = investimentoService.listarPorCpf(cpf);
+        if (!resp.getStatusCode().is2xxSuccessful()) {
+            return ResponseEntity.status(resp.getStatusCode()).build();
+        }
+        List<Investimento> body = resp.getBody();
+        List<InvestimentoDTO> dtos = body != null ? body.stream().map(InvestimentoDTO::fromEntity).toList() : List.of();
+        return ResponseEntity.ok(dtos);
     }
 
     /**

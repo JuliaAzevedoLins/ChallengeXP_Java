@@ -12,8 +12,8 @@ public interface UsuarioInvestimentoRepository extends JpaRepository<UsuarioInve
     /**
      * Busca um usuário investidor pelo CPF de identificação.
      *
-     * @param cpfIdentificacao CPF de identificação do usuário
+     * @param cpf CPF de identificação do usuário
      * @return usuário investidor correspondente ou null se não encontrado
      */
-    UsuarioInvestimento findByCpfIdentificacao(String cpfIdentificacao);
+    UsuarioInvestimento findByCpf_Cpf(String cpf);
 }
