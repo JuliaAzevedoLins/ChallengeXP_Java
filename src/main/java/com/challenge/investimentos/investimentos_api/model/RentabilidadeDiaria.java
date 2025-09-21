@@ -6,6 +6,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Entidade que representa a rentabilidade diária de um {@link Investimento}.
+ * 
+ * Armazena data, valor diário da ação, taxa diária de rentabilidade e o
+ * montante acumulado para o dia.
+ */
 @Entity
 @Table(name = "RENTABILIDADE_DIARIA_TABLE")
 public class RentabilidadeDiaria implements Serializable {
@@ -27,12 +33,25 @@ public class RentabilidadeDiaria implements Serializable {
     @Column(name = "MONTANTE_ACUMULADO_DIARIO", precision = 15, scale = 2)
     private BigDecimal montanteAcumuladoDiario;
 
+    /**
+     * Relação N:1 com o investimento ao qual esta rentabilidade pertence.
+     * A anotação {@link JsonBackReference} evita recursão na serialização JSON.
+     */
     @ManyToOne
     @JsonBackReference
     private Investimento investimento;
 
+    /** Construtor padrão exigido pelo JPA. */
     public RentabilidadeDiaria() {}
 
+    /**
+     * Cria uma rentabilidade diária com seus valores principais.
+     *
+     * @param dataRentabilidadeDiaria data da rentabilidade
+     * @param valorDiarioAcao valor diário da ação
+     * @param taxaDiarioRentabilidade taxa diária de rentabilidade
+     * @param montanteAcumuladoDiario montante acumulado no dia
+     */
     public RentabilidadeDiaria(LocalDate dataRentabilidadeDiaria, BigDecimal valorDiarioAcao, BigDecimal taxaDiarioRentabilidade, BigDecimal montanteAcumuladoDiario) {
         this.dataRentabilidadeDiaria = dataRentabilidadeDiaria;
         this.valorDiarioAcao = valorDiarioAcao;
@@ -40,7 +59,6 @@ public class RentabilidadeDiaria implements Serializable {
         this.montanteAcumuladoDiario = montanteAcumuladoDiario;
     }
 
-    // Getters e Setters
     public Long getId() {
         return id;
     }

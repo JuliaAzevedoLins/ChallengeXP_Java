@@ -6,6 +6,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entidade que representa o usuário investidor no sistema.
+ * 
+ * Possui um CPF de identificação único e a lista de seus investimentos.
+ */
 @Entity
 @Table(name = "USUARIO_INVESTIMENTO")
 public class UsuarioInvestimento implements Serializable {
@@ -14,9 +19,15 @@ public class UsuarioInvestimento implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** CPF do investidor (único na base). */
     @Column(name = "CPF_IDENTIFICACAO", nullable = false, unique = true)
     private String cpfIdentificacao;
 
+    /**
+     * Relação 1:N com os investimentos do usuário.
+     * A anotação {@link JsonManagedReference} complementa o {@code @JsonBackReference}
+     * em {@link Investimento} para evitar recursão na serialização JSON.
+     */
     @OneToMany(mappedBy = "usuarioInvestimento", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Investimento> investimentos = new ArrayList<>();

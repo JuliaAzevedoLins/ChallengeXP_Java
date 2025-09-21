@@ -7,6 +7,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entidade que representa um investimento do usuário.
+ * 
+ * Contém dados básicos (nome, montante, taxa, etc.), o tipo de investimento,
+ * e os relacionamentos com o usuário investidor e a lista de rentabilidades diárias.
+ */
 @Entity
 @Table(name = "INVESTIMENTO")
 public class Investimento {
@@ -34,15 +40,21 @@ public class Investimento {
     @Column(name = "NUMERO_ACOES_INICIAL")
     private Integer numeroAcoesInicial;
 
+    /** Tipo do investimento, persistido como texto. */
     @Enumerated(EnumType.STRING)
     @Column(name = "TIPO_INVESTIMENTO")
     private TipoInvestimentoEnum tipoInvestimento;
 
+    /**
+     * Associação N:1 com o usuário investidor.
+     * Marcado com {@link JsonBackReference} para evitar recursão na serialização JSON.
+     */
     @ManyToOne
     @JoinColumn(name = "USUARIO_INVESTIMENTO_ID")
-    @JsonBackReference // <-- Anotação adicionada para quebrar o loop
+    @JsonBackReference
     private UsuarioInvestimento usuarioInvestimento;
 
+    /** Rentabilidades diárias associadas ao investimento (cascade + orphanRemoval). */
     @OneToMany(mappedBy = "investimento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RentabilidadeDiaria> rentabilidadeDiaria = new ArrayList<>();
 

@@ -11,17 +11,22 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import java.time.format.DateTimeParseException;
 
 /**
- * Handler global para tratamento de exceções na API REST.
- * Fornece respostas amigáveis para erros comuns de validação, formatação e conversão de dados.
+ * Handler global para tratamento de exceções da API de Investimentos.
+ * 
+ * Intercepta e trata exceções lançadas pelos controllers, retornando
+ * respostas HTTP adequadas com mensagens de erro amigáveis ao usuário.
  */
 @ControllerAdvice
 public class RestExceptionHandler {
 
     /**
-     * Trata erros de leitura/conversão do corpo da requisição, como enums inválidos, datas ou números em formato incorreto.
+     * Trata erros de deserialização do corpo da requisição JSON.
+     * 
+     * Captura problemas como: enums inválidos, formatos de data incorretos,
+     * valores numéricos mal formatados e outros erros de conversão.
      *
-     * @param ex Exceção lançada durante a leitura do corpo da requisição
-     * @return ResponseEntity com mensagem de erro e status HTTP apropriado
+     * @param ex exceção de leitura/conversão do corpo da requisição
+     * @return ResponseEntity com mensagem de erro específica e status 400 (Bad Request)
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleEnumException(HttpMessageNotReadableException ex) {
@@ -55,10 +60,10 @@ public class RestExceptionHandler {
     }
 
     /**
-     * Trata erros de parsing de datas, retornando mensagem clara sobre o formato esperado.
+     * Trata erros de parsing de datas inválidas.
      *
-     * @param ex Exceção de formatação de data
-     * @return ResponseEntity com mensagem de erro e status 400
+     * @param ex exceção de formatação de data
+     * @return ResponseEntity com mensagem de erro e status 400 (Bad Request)
      */
     @ExceptionHandler(DateTimeParseException.class)
     public ResponseEntity<String> handleDateParseException(DateTimeParseException ex) {
@@ -68,10 +73,13 @@ public class RestExceptionHandler {
     }
 
     /**
-     * Trata erros de validação de campos dos DTOs, retornando mensagens detalhadas para cada campo inválido.
+     * Trata erros de validação de campos dos DTOs.
+     * 
+     * Processa anotações de validação (@NotNull, @Valid, etc.) e retorna
+     * mensagens detalhadas para cada campo que falhou na validação.
      *
-     * @param ex Exceção de argumento inválido (validação)
-     * @return ResponseEntity com mensagem de erro e status 400
+     * @param ex exceção de validação de argumentos
+     * @return ResponseEntity com mensagens de erro por campo e status 400 (Bad Request)
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
@@ -83,10 +91,10 @@ public class RestExceptionHandler {
     }
 
     /**
-     * Trata exceções genéricas não capturadas por outros handlers, retornando erro interno do servidor.
+     * Fallback para exceções não tratadas pelos outros handlers.
      *
-     * @param ex Exceção genérica
-     * @return ResponseEntity com mensagem de erro e status 500
+     * @param ex exceção genérica não capturada
+     * @return ResponseEntity com mensagem de erro e status 500 (Internal Server Error)
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(Exception ex) {

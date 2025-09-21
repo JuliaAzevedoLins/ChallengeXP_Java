@@ -31,7 +31,7 @@ public class BancoController {
      * Lista os bancos associados ao CPF informado.
      *
      * @param cpf CPF do usuário investidor
-     * @return Lista de nomes de bancos (String) associados ao CPF
+    * @return Lista de nomes de bancos associados ao CPF
      */
     @Operation(
         summary = "Lista bancos por CPF",
@@ -43,7 +43,7 @@ public class BancoController {
         @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
     @GetMapping("/{cpf}")
-    public List<String> listarBancosPorCpf(@PathVariable String cpf) { // <-- Tipo de retorno alterado para List<String>
+    public List<String> listarBancosPorCpf(@PathVariable String cpf) {
         return bancoService.listarBancosPorCpf(cpf);
     }
 }

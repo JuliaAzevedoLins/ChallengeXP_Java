@@ -23,6 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Camada de serviço responsável por operações de CRUD e consultas de investimentos.
+ * 
+ * Realiza validações básicas, conversões de DTOs para entidades e orquestra
+ * as interações com os repositórios.
+ */
 @Service
 public class InvestimentoService {
 
@@ -37,6 +43,15 @@ public class InvestimentoService {
         this.investimentoRepository = investimentoRepository;
     }
 
+    /**
+     * Persiste ou atualiza uma lista de investimentos de um usuário informado via DTO.
+     * 
+     * Valida se o CPF existe e se a lista de investimentos foi enviada, converte
+     * os dados do DTO para entidades e salva em lote.
+     *
+     * @param dto dados do usuário e seus investimentos
+     * @return 200 em caso de sucesso; 400 quando houver validação inválida
+     */
     @Transactional
     public ResponseEntity<String> salvarInvestimentos(UsuarioInvestimentoDTO dto) {
         if (dto.getCpfIdentificacao() == null || dto.getCpfIdentificacao().isEmpty()) {
@@ -56,11 +71,8 @@ public class InvestimentoService {
             Investimento investimento = new Investimento();
             investimento.setUsuarioInvestimento(usuario);
 
-            // Banco - usar a lógica do enum
-            // Você só precisa do nome do banco, que está no DTO
             investimento.setNomeBanco(investDTO.getNomeBanco());
 
-            // Tipo de investimento
             TipoInvestimentoEnum tipoInvestimento;
             try {
                 tipoInvestimento = TipoInvestimentoEnum.valueOf(investDTO.getTipoInvestimento().toUpperCase());
@@ -70,13 +82,11 @@ public class InvestimentoService {
             investimento.setTipoInvestimento(tipoInvestimento);
             investimento.setNomeInvestimento(investDTO.getNomeInvestimento());
 
-            // Valores numéricos
             investimento.setMontanteInicial(investDTO.getMontanteInicial());
             investimento.setValorInicialAcao(investDTO.getValorInicialAcao());
             investimento.setTaxaRentabilidade(investDTO.getTaxaRentabilidade());
             investimento.setNumeroAcoesInicial(investDTO.getNumeroAcoesInicial());
 
-            // Rentabilidade diária
             if (investDTO.getRentabilidadeDiaria() != null && !investDTO.getRentabilidadeDiaria().isEmpty()) {
                 List<RentabilidadeDiaria> rentabilidades = investDTO.getRentabilidadeDiaria().stream()
                         .map(rdDTO -> {
@@ -97,11 +107,20 @@ public class InvestimentoService {
         return ResponseEntity.ok("Investimentos atualizados com sucesso");
     }
 
+    /**
+     * Lista todos os investimentos.
+     * @return lista completa de investimentos
+     */
     @Transactional(readOnly = true)
     public ResponseEntity<List<Investimento>> listarTodos() {
         return ResponseEntity.ok(investimentoRepository.findAll());
     }
 
+    /**
+     * Lista investimentos por CPF do usuário.
+     * @param cpf identificador do usuário investidor
+     * @return 200 com lista (possivelmente vazia) ou 404 se usuário não encontrado
+     */
     @Transactional(readOnly = true)
     public ResponseEntity<List<Investimento>> listarPorCpf(String cpf) {
         UsuarioInvestimento usuario = usuarioInvestimentoRepository.findByCpfIdentificacao(cpf);
@@ -111,6 +130,11 @@ public class InvestimentoService {
         return ResponseEntity.ok(investimentos);
     }
 
+    /**
+     * Deleta um investimento pelo seu identificador.
+     * @param id ID do investimento
+     * @return 200 se deletado; 404 se não existir
+     */
     @Transactional
     public ResponseEntity<String> deletarPorId(Long id) {
         if (!investimentoRepository.existsById(id)) return ResponseEntity.notFound().build();
@@ -119,6 +143,12 @@ public class InvestimentoService {
         return ResponseEntity.ok("Investimento deletado com sucesso");
     }
 
+    /**
+     * Atualiza um investimento existente com os dados fornecidos.
+     * @param id ID do investimento a ser atualizado
+     * @param dto dados novos do investimento
+     * @return 200 em caso de sucesso; 400 se tipo de investimento inválido; 404 se não encontrado
+     */
     @Transactional
     public ResponseEntity<String> atualizarInvestimento(Long id, InvestimentoDTO dto) {
         Investimento investimentoExistente = investimentoRepository.findById(id)
@@ -138,10 +168,8 @@ public class InvestimentoService {
         investimentoExistente.setTaxaRentabilidade(dto.getTaxaRentabilidade());
         investimentoExistente.setNumeroAcoesInicial(dto.getNumeroAcoesInicial());
         
-        // Ajuste para definir o nome do banco
         investimentoExistente.setNomeBanco(dto.getNomeBanco());
 
-        // Atualiza rentabilidade diária
         if (investimentoExistente.getRentabilidadeDiaria() == null) {
             investimentoExistente.setRentabilidadeDiaria(new ArrayList<>());
         }
@@ -163,6 +191,12 @@ public class InvestimentoService {
         return ResponseEntity.ok("Investimento atualizado com sucesso");
     }
 
+    /**
+     * Cria investimentos para um usuário a partir do DTO informado.
+     * Encaminha para o método de salvar, reutilizando a lógica.
+     * @param dto dados do usuário e seus investimentos
+     * @return resposta do processamento de salvamento
+     */
     @Transactional
     public ResponseEntity<String> criarInvestimento(@Valid UsuarioInvestimentoDTO dto) {
         return salvarInvestimentos(dto);

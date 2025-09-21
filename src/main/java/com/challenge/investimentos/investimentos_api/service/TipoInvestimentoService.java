@@ -29,11 +29,10 @@ public class TipoInvestimentoService {
      * Lista os tipos de investimento distintos associados a um usuário investidor pelo CPF.
      *
      * @param cpf CPF do usuário investidor
-     * @return lista de tipos de investimento associados ao CPF informado
+     * @return lista de tipos de investimento distintos associados ao CPF informado
      */
     @Transactional(readOnly = true)
     public List<TipoInvestimentoDTO> listarTiposPorCpf(String cpf) {
-        // Usa o novo método do repositório e aplica a distinção no stream
         return investimentoRepository.findByUsuarioInvestimento_CpfIdentificacao(cpf).stream()
                 .map(i -> new TipoInvestimentoDTO(i.getTipoInvestimento().name()))
                 .distinct()
