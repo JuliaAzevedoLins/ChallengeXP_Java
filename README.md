@@ -203,14 +203,7 @@ Ao expandir o controller de "Usuários Investidores", você pode ver todos os en
 
 *Controller de Usuários Investidores expandido mostrando os endpoints disponíveis. Destaque para o endpoint GET /api/usuario-investimentos que lista todos os usuários cadastrados. Cada endpoint possui descrição clara de sua funcionalidade.*
 
-**Principais endpoints visíveis:**
-- **GET** `/api/usuario-investimentos` - Listar todos os usuários investidores
-- **POST** `/api/usuario-investimentos` - Criar novo usuário investidor  
-- **GET** `/api/usuario-investimentos/{cpf}` - Buscar usuário por CPF
-- **PUT** `/api/usuario-investimentos` - Atualizar investimentos do usuário
-- **DELETE** `/api/usuario-investimentos/{cpf}` - Deletar usuário por CPF
-
-#### � Funcionalidades do Swagger UI
+#### Funcionalidades do Swagger UI
 O Swagger oferece uma interface completa para testar a API:
 
 - **Documentação Interativa**: Cada endpoint possui descrição detalhada, parâmetros e exemplos
@@ -434,8 +427,7 @@ Cada um segue o mesmo padrão de organização, com endpoints específicos para 
   ```json
   [
     {
-      "nomeBanco": "C6 Bank",
-      "codigoBancario": 336
+      "nomeBanco": "C6 Bank"
     }
   ]
   ```
