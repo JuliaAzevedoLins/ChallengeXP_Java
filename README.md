@@ -86,9 +86,10 @@ Repositório oficial: [https://github.com/JuliaAzevedoLins/ChallengeXP_Java](htt
    mvn spring-boot:run
    ```
 
-4. **Acesse a documentação Swagger:**
+4. **Acesse a documentação Swagger e Interface Web:**
    - [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
    - [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+   - [http://localhost:8080/investimentos.html](http://localhost:8080/investimentos.html)
 
 ---
 
